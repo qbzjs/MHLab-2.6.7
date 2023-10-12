@@ -12,9 +12,9 @@ TagManager:
   - hide
   - Water
   - UI
-  - whatIsWall
-  - whatIsGround
-  - whatIsLedge
+  - Ground
+  - Wall
+  - 
   - 
   - 
   - 

@@ -14,6 +14,7 @@ public static class Loader {
         LobbyScene,
         CharacterSelectScene,
         Map1,
+        DemoScene,
     }
 
 
