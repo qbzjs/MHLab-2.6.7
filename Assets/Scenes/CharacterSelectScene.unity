@@ -263,7 +263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5520591704674119628, guid: c087d77c0d1af884082d852772046e3e, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5520591704674119628, guid: c087d77c0d1af884082d852772046e3e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -390,57 +390,8 @@ Transform:
   m_Children:
   - {fileID: 1354022593}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 2, y: 0, z: 0}
---- !u!1 &251802968
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 251802970}
-  - component: {fileID: 251802969}
-  m_Layer: 0
-  m_Name: Global Volume
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &251802969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251802968}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IsGlobal: 1
-  priority: 0
-  blendDistance: 0
-  weight: 1
-  sharedProfile: {fileID: 11400000, guid: a05b1b6298f644a488d6d3dc6e8cb9d3, type: 2}
---- !u!4 &251802970
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251802968}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 2, y: 0, z: 0}
 --- !u!1 &425462503
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,8 +567,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainMenuButton: {fileID: 149895252}
   readyButton: {fileID: 425462505}
-  lobbyNameText: {fileID: 0}
-  lobbyCodeText: {fileID: 0}
 --- !u!1001 &566528080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -636,7 +585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5520591704674119628, guid: c087d77c0d1af884082d852772046e3e, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5520591704674119628, guid: c087d77c0d1af884082d852772046e3e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1221,7 +1170,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1385493780}
   - component: {fileID: 1385493779}
-  - component: {fileID: 1385493778}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -1229,29 +1177,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1385493778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1385493777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Version: 3
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
-  m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 2
 --- !u!108 &1385493779
 Light:
   m_ObjectHideFlags: 0
@@ -1347,7 +1272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5520591704674119628, guid: c087d77c0d1af884082d852772046e3e, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5520591704674119628, guid: c087d77c0d1af884082d852772046e3e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1656,7 +1581,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5520591704674119628, guid: c087d77c0d1af884082d852772046e3e, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5520591704674119628, guid: c087d77c0d1af884082d852772046e3e, type: 3}
       propertyPath: m_LocalPosition.x

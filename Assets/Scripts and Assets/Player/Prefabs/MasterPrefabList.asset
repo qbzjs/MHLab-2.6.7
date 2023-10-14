@@ -13,4 +13,9 @@ MonoBehaviour:
   m_Name: MasterPrefabList
   m_EditorClassIdentifier: 
   IsDefault: 0
-  List: []
+  List:
+  - Override: 0
+    Prefab: {fileID: 1517558606907793668, guid: d23ae7cae61f095478fb5c7d2f0fd06c, type: 3}
+    SourcePrefabToOverride: {fileID: 0}
+    SourceHashToOverride: 0
+    OverridingTargetPrefab: {fileID: 0}
