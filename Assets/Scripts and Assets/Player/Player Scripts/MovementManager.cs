@@ -40,11 +40,10 @@ public class MovementManager : MonoBehaviour
     public SlideModule slideModule;
     public ClimbModule climbModule;
     public CameraModule cameraModule;
-    public WallRunModule wallRunModule;
 
     [Header("Refrences")]
-    [Tooltip("The rigidbody used to apply movement to the player.")]
-    public Rigidbody rb;
+    [Tooltip("The 2d rigidbody used to apply movement to the player.")]
+    [HideInInspector] public Rigidbody2D rb;
     
     [Tooltip("The game object with the rigidbody used to apply movement to the player.")]
     public GameObject rigidbodyObject;
@@ -65,14 +64,12 @@ public class MovementManager : MonoBehaviour
     
     [Header("State Machine")]
     public bool isClimbing;
-    public bool isWallRunning;
     public bool isSliding;
     public bool isSprinting;
     public bool isCrouching;
     public bool isWalking;
 
     public bool canClimb = true;
-    public bool canWallRun = true;
     public bool canSlide = true;
     public bool canSprint = true;
     public bool canCrouch = true;
@@ -84,10 +81,9 @@ public class MovementManager : MonoBehaviour
 
     private void Start()
     {
-        rb = rigidbodyObject.GetComponent<Rigidbody>();
+        rb = rigidbodyObject.GetComponent<Rigidbody2D>();
 
         canClimb = true;
-        canWallRun = true;
         canSlide = true;
         canSprint = true;
         canCrouch = true;
@@ -111,7 +107,6 @@ public class MovementManager : MonoBehaviour
         jump.Enable();
         jump.performed += jumpModule.StartJump;
         jump.performed += climbModule.StartClimbJump;
-        jump.performed += wallRunModule.StartWallJump;
         
         sprint = playerInput.Player.Sprint;
         sprint.Enable();

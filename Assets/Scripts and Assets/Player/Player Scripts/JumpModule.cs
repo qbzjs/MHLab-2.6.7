@@ -38,8 +38,8 @@ public class JumpModule : MonoBehaviour
 
     // Serialized private variables
     [Header("Private Variables")]
-    [SerializeField] private int jumpsRemaining;
-    [SerializeField] private float lastJumpTime;
+    private int jumpsRemaining;
+    private float lastJumpTime;
 
     // Serialized private reference
     [Header("References")]
@@ -57,7 +57,7 @@ public class JumpModule : MonoBehaviour
     }
 
     // Checks if the player has touched the ground, if they have it resets their jumps.
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         // Check if the collided object is in the specified layer
         if ((groundLayer.value & 1 << collision.gameObject.layer) != 0)
@@ -91,7 +91,7 @@ public class JumpModule : MonoBehaviour
     {
         if (jumpsRemaining > 0 && movementManager.canJump)
         {
-            movementManager.rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            movementManager.rb.AddForce(Vector3.up * jumpForce, ForceMode2D.Impulse);
             jumpsRemaining--;
 
             // Debug

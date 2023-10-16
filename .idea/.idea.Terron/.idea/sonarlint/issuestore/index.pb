@@ -7,8 +7,6 @@ V
 0Assets/Scripts and Assets/Dependencies/Loader.cs,4\f\4fbdbbfbec7789d51a00a026e8bc1c2a054d1c52
 c
 3Assets/Other/__Global/Editor/TransformDataDrawer.cs,1\6\1618d959ef189dcbf14aee3d01594cabe30a24b6
-v
-FAssets/Scripts and Assets/Player/Player Scripts/PlayerMovementInput.cs,0\6\06bf932ae7fad0d8b6fe7864737459d8afb8da24
 n
 >Assets/Scripts and Assets/Player/Player Scripts/ClimbModule.cs,d\e\dedb9c3edc52dfd8370b9e024a62233b81c02d24
 o
@@ -29,3 +27,5 @@ p
 @Assets/Scripts and Assets/Player/Player Scripts/WallRunModule.cs,2\0\200c9f6253a622eb3fcac870e3dd52ba26c0d364
 o
 ?Assets/Scripts and Assets/Player/Player Scripts/CrouchModule.cs,0\a\0a1766abd9a11eff58a1fd830f8118b3977444fb
+e
+5Assets/Scripts and Assets/GameManagers/GameManager.cs,9\b\9b6aa32df64042fea21f1a5724ca300c86fee3e8

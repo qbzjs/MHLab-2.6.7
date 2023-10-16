@@ -47,11 +47,11 @@ public class SlideModule : MonoBehaviour
 
         Vector3 slideDirection = transform.forward;
 
-        movementManager.rb.AddForce(slideDirection * slideSpeed, ForceMode.VelocityChange);
+        movementManager.rb.AddForce(slideDirection * slideSpeed, ForceMode2D.Impulse);
 
         movementManager.canWalk = false;
 
-        movementManager.rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        movementManager.rb.AddForce(Vector3.down * 5f, ForceMode2D.Impulse);
     }
 
     private void StopSlide()

@@ -70,7 +70,6 @@ public class ClimbModule : MonoBehaviour
             movementManager.canWalk = false;
             movementManager.canSlide = false;
             movementManager.canJump = false;
-            movementManager.canWallRun = false;
             movementManager.canJump = true;
 
             if (movementManager.useDebug)
@@ -86,7 +85,6 @@ public class ClimbModule : MonoBehaviour
             movementManager.canWalk = true;
             movementManager.canSlide = true;
             movementManager.canJump = true;
-            movementManager.canWallRun = true;
             movementManager.canJump = false;
 
             if (movementManager.useDebug)
@@ -99,7 +97,6 @@ public class ClimbModule : MonoBehaviour
             movementManager.canJump = false;
             movementManager.canSlide = true;
             movementManager.canJump = true;
-            movementManager.canWallRun = true;
         }
 
         if (movementManager.isClimbing)
@@ -107,7 +104,7 @@ public class ClimbModule : MonoBehaviour
             // Apply climbing force with max speed
             Vector3 climbingForce = Vector3.up * climbingSpeed;
             climbingForce = Vector3.ClampMagnitude(climbingForce, maxClimbingSpeed);
-            movementManager.rb.AddForce(climbingForce, ForceMode.Impulse);
+            movementManager.rb.AddForce(climbingForce, ForceMode2D.Impulse);
         }
     }
 
@@ -146,7 +143,7 @@ public class ClimbModule : MonoBehaviour
         if (canJump)
         {
             Vector3 backwardDirection = -movementManager.orientation.forward;
-            movementManager.rb.AddForce(backwardDirection * jumpForce, ForceMode.Impulse);
+            movementManager.rb.AddForce(backwardDirection * jumpForce, ForceMode2D.Impulse);
 
             if (movementManager.useDebug)
             {

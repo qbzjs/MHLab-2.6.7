@@ -11,8 +11,6 @@ m
 =Assets/Scripts and Assets/Player/Player Scripts/JumpModule.cs,2\1\2117120c4d1852032be88c080b3b26b82262955e
 r
 BAssets/Scripts and Assets/Player/Player Scripts/MovementManager.cs,3\1\31e7056166d52da21dfcae1baa76443b8cead1c1
-v
-FAssets/Scripts and Assets/Player/Player Scripts/PlayerMovementInput.cs,0\6\06bf932ae7fad0d8b6fe7864737459d8afb8da24
 q
 AAssets/Scripts and Assets/Player/Player Scripts/MovementModule.cs,9\7\977d53f3f0b56d7aacbc40f044f34f62645bbcd9
 o
@@ -29,3 +27,5 @@ z
 JAssets/Scripts and Assets/Player/Player Selection/CharacterSelectPlayer.cs,4\7\474ad702a1fde69b05d6e7d0c8449aa193b66a92
 o
 ?Assets/Scripts and Assets/Player/Player Scripts/CrouchModule.cs,0\a\0a1766abd9a11eff58a1fd830f8118b3977444fb
+e
+5Assets/Scripts and Assets/GameManagers/GameManager.cs,9\b\9b6aa32df64042fea21f1a5724ca300c86fee3e8

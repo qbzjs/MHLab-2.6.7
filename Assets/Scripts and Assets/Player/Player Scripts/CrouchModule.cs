@@ -60,7 +60,7 @@ public class CrouchModule : MonoBehaviour
 
         movementManager.orientation.localScale = new Vector3(1, crouchHeight, 1);
 
-        movementManager.rb.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+        movementManager.rb.AddForce(Vector3.down * 5f, ForceMode2D.Impulse);
     }
 
     private void StopCrouch()
