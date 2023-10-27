@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ButtonPurchaseManager : MonoBehaviour
 {
+    /*
     private Button purchaseButton;
     
     private string itemID;
@@ -19,6 +20,6 @@ public class ButtonPurchaseManager : MonoBehaviour
     
     public void PurchaseItem;
     {
-    }
-    
+        
+    */
 }
