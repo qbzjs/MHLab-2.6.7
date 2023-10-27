@@ -63,11 +63,11 @@ public class LobbyManager : MonoBehaviour {
 
     private void Start() {
         MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += MultiplayerManager_OnPlayerDataNetworkListChanged;
-        CharacterSelectReady.OnInstanceCreated += CharacterSelectReady_OnInstanceCreated;
+        VoteManager.OnInstanceCreated += CharacterSelectReady_OnInstanceCreated;
     }
 
     private void CharacterSelectReady_OnInstanceCreated(object sender, EventArgs e) {
-        CharacterSelectReady.Instance.OnGameStarting += CharacterSelectReady_OnGameStarting;
+        VoteManager.Instance.OnGameStarting += CharacterSelectReady_OnGameStarting;
     }
 
     private async void CharacterSelectReady_OnGameStarting(object sender, EventArgs e) {
@@ -174,7 +174,7 @@ public class LobbyManager : MonoBehaviour {
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetConnectionData(ipv4Address, port, "0.0.0.0");
 
         MultiplayerManager.Instance.StartServer();
-        Loader.LoadNetwork(Loader.Scene.CharacterSelectScene);
+        Loader.LoadNetwork("CharacterSelectScene");
 
         Debug.Log("Started Server");
     }
@@ -368,7 +368,7 @@ public class LobbyManager : MonoBehaviour {
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(new RelayServerData(allocation, "dtls"));
 
             MultiplayerManager.Instance.StartHost();
-            Loader.LoadNetwork(Loader.Scene.CharacterSelectScene);
+            Loader.LoadNetwork("CharacterSelectScene");
         } catch (LobbyServiceException e) {
             Debug.Log(e);
             OnCreateLobbyFailed?.Invoke(this, EventArgs.Empty);

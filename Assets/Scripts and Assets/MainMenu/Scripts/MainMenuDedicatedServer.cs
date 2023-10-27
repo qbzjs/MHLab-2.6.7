@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class MainMenuDedicatedServer : MonoBehaviour {
 
-
-    private void Update() {
 #if DEDICATED_SERVER
+    private void Start() 
+    {
+        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount  = 0;
+        
+
         Debug.Log("DEDICATED_SERVER");
         Loader.Load(Loader.Scene.LobbyScene);
-#endif
     }
+#endif
 
 }

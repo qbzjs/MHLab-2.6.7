@@ -43,8 +43,13 @@ public class MovementModule : MonoBehaviour
     public float maxSpeed;
     private Vector2 movementInput;
 
-    public float rotationSpeed = 5f; // Adjust the speed in the Inspector
-    private float targetRotationY = 180f; // Initial Y rotation
+    public float flipSpeed = 0.5f; // Adjust the speed in the Inspector
+    private SpriteRenderer spriteRenderer;
+
+    void Start()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     void FixedUpdate()
     {
@@ -62,13 +67,15 @@ public class MovementModule : MonoBehaviour
 
     void ApplyMovement()
     {
-        // Calculate the target Y rotation based on movement input
-        targetRotationY = (movementInput.x > 0) ? 0f : (movementInput.x < 0) ? 180f : targetRotationY;
-
-        // Update the Y rotation of the GameObject
-        Vector3 currentRotation = transform.rotation.eulerAngles;
-        currentRotation.y = Mathf.LerpAngle(currentRotation.y, targetRotationY, Time.deltaTime * rotationSpeed);
-        transform.rotation = Quaternion.Euler(currentRotation);
+        // Flip the sprite horizontally based on movement input
+        if (movementInput.x > 0)
+        {
+            spriteRenderer.flipX = false; // Not flipped
+        }
+        else if (movementInput.x < 0)
+        {
+            spriteRenderer.flipX = true; // Flipped
+        }
 
         // Calculate the movement direction based on input (not player's orientation)
         Vector3 moveDirection = new Vector3(movementInput.x, 0f, 0f);

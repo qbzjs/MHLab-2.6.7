@@ -1,34 +1,62 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using System;
 using UnityEngine.InputSystem;
 
 public class WeaponManager : NetworkBehaviour
 {
     [Header("Customize")]
-    public float fireRate;
     public GameObject projectile;
     public float projectileSpeed;
-    public Transform InistialTransform;
+    public Transform firePoint;
     public int maxAmmo;
     public float reloadTime;
-    public Camera fpsCam;
+    public Camera camera;
+    public float damage;
+    public float maxRotation;
+    public Transform playerTransform;
     
     [Header("References")]
-    public GameObject impactEffect;
     public Animator animator;
     
     [Header("Private Variables")]
     private int currentAmmo;
     private Vector3 destination;
-    private bool isReloading = false;
+    private bool isReloading;
     
     [Header("Input")]
     public PlayerMovementInput playerInput;
     private InputAction fire1;
     private InputAction reload;
+    
+    void Update()
+    {
+        Vector3 cursorScreenPosition = Input.mousePosition;
+        Vector3 cursorWorldPosition = camera.ScreenToWorldPoint(new Vector3(cursorScreenPosition.x, cursorScreenPosition.y, transform.position.z - camera.transform.position.z));
+    
+        // Calculate the direction from the gun to the cursor
+        Vector3 direction = cursorWorldPosition - transform.position;
+    
+        // Calculate the rotation angle based on the direction
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    
+        // Ensure the rotation angle is outside the range of -65 to -150 degrees
+        if (angle >= -150f && angle <= -65f)
+        {
+            if (angle > -107.5f)  // Adjust this threshold for smooth transition
+            {
+                angle = -65f; // Set it to the minimum angle (-65 degrees) if it's within the range
+            }
+            else
+            {
+                angle = -150f; // Set it to the maximum angle (-150 degrees) if it's within the range
+            }
+        }
+    
+        // Apply the new Z rotation while preserving the original Y and X rotations
+        Quaternion originalRotation = transform.rotation;
+        transform.rotation = Quaternion.Euler(originalRotation.eulerAngles.x, originalRotation.eulerAngles.y, angle);
+    }
 
     private void Awake()
     {
@@ -59,14 +87,6 @@ public class WeaponManager : NetworkBehaviour
         fire1.Disable();
         
         reload.Disable();
-    }    
-     
-    void Update()
-    {
-        if (isReloading)
-        {
-            return;
-        }
     }
     
     public void StartReload(InputAction.CallbackContext context)
@@ -74,7 +94,6 @@ public class WeaponManager : NetworkBehaviour
         if (currentAmmo < maxAmmo)
         {
             StartCoroutine(Reload());
-            return;
         }
     }    
 
@@ -95,7 +114,7 @@ public class WeaponManager : NetworkBehaviour
     
     public void Fire1(InputAction.CallbackContext context)
     {
-        if (currentAmmo >= 0)
+        if (currentAmmo > 0)
         {
             Shoot();
         }
@@ -104,35 +123,18 @@ public class WeaponManager : NetworkBehaviour
     void Shoot()
     {
         currentAmmo--;
-        
-        Ray ray = fpsCam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
-        
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit))
-        {
-            GameObject impactGO = Instantiate(impactEffect, hit.point, Quaternion.LookRotation(hit.normal));
-            Destroy(impactGO, 2f);
-            
-            if (Physics.Raycast(ray, out hit))
-            {
-                destination = hit.point;
-            } 
-            else
-            {
-                destination = ray.GetPoint(1000);
-            }
-            
-            SpawnBulletServerRPC(InistialTransform.position, InistialTransform.rotation);
-        }
+    
+        SpawnBulletServerRPC(firePoint.position, firePoint.rotation);
     }
 
     [ServerRpc]
-    private void SpawnBulletServerRPC (Vector3 position, Quaternion rotation, ServerRpcParams serverRpcParams = default)
+    private void SpawnBulletServerRPC(Vector3 position, Quaternion rotation, ServerRpcParams serverRpcParams = default)
     {
-        GameObject InstantiatedBullet = Instantiate(projectile, position, rotation);
+        GameObject instantiatedBullet = Instantiate(projectile, position, rotation);
 
-        InstantiatedBullet.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId);
-        
-        InstantiatedBullet.GetComponent<Projectile>().projectileSpeed = projectileSpeed;
+        instantiatedBullet.GetComponent<Projectile>().projectileSpeed = projectileSpeed;
+        instantiatedBullet.GetComponent<Projectile>().damage = damage;
+
+        instantiatedBullet.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId);
     }
 }

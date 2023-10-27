@@ -27,27 +27,25 @@ public class LootLockerAuthentication : MonoBehaviour
     public GameObject Wait;
     public GameObject setPlayerName;
 
-    public GameObject cameraTransitionObject;
-
     public GameObject signUpPage;
     public GameObject logInPage;
 
     public GameObject signUpButton;
     public GameObject logInButton;
 
-    public GameObject mainMenu;
+    public GameObject buttonsUI;
 
     bool rememberMe = true;
 
-    private string logInEmail = "Enter your email...";
-    private string logInPassword = "Enter your password...";
+    private string logInEmail;
+    private string logInPassword;
 
-    private string signUpEmail = "Enter your email...";
-    private string signUpPassword = "Enter your password...";
+    private string signUpEmail;
+    private string signUpPassword;
 
-    private string playerName = "Enter your desired player name...";
+    private string playerName;
 
-    private string resetEmail = "Enter your email...";
+    private string resetEmail;
 
     private bool canStart = true;
 
@@ -116,29 +114,17 @@ public class LootLockerAuthentication : MonoBehaviour
 
     private void UpdatePasswordFromInputField()
     {
-        if (logInPasswordInputField != null)
-        {
-            logInPassword = logInPasswordInputField.text;
-        }
+        logInPassword = logInPasswordInputField.text;
+        
+        signUpPassword = signUpPasswordInputField.text;
 
-        if (signUpPassword != null)
+        if (signUpPassword.Length <= 8)
         {
-            signUpPassword = signUpPasswordInputField.text;
-        }
-
-        if (signUpPassword.Length < 8)
-        {
-            if (signUpButton != null)
-            {
-                signUpButton.SetActive(false);
-            }
+            signUpButton.SetActive(false);
         }
         else
         {
-            if (signUpButton != null)
-            {
-                signUpButton.SetActive(true);
-            }
+            signUpButton.SetActive(true);
         }
     }
 
@@ -247,13 +233,11 @@ public class LootLockerAuthentication : MonoBehaviour
                                 {
                                     Authentication.SetActive(false);
 
-                                    CallMoveCameraToTarget1();
-
                                     PlayerPrefs.SetString("SavedEmail", logInEmail);
                                     PlayerPrefs.SetString("SavedPassword", logInPassword);
                                     PlayerPrefs.Save();
 
-                                    mainMenu.SetActive(true);
+                                    buttonsUI.SetActive(true);
                                 }
                             }
                             else
@@ -308,39 +292,16 @@ public class LootLockerAuthentication : MonoBehaviour
 
                 Authentication.SetActive(false);
 
-                CallMoveCameraToTarget1();
-
                 PlayerPrefs.SetString("SavedEmail", logInEmail);
                 PlayerPrefs.SetString("SavedPassword", logInPassword);
                 PlayerPrefs.Save();
 
-                mainMenu.SetActive(true);
+                buttonsUI.SetActive(true);
             }
             else
             {
                 Debug.Log("Error setting player name");
             }
         });
-    }
-
-    public void CallMoveCameraToTarget1()
-    {
-        if (cameraTransitionObject != null)
-        {
-            CameraTransition cameraTransition = cameraTransitionObject.GetComponent<CameraTransition>();
-
-            if (cameraTransition != null)
-            {
-                cameraTransition.MoveCameraToTarget1();
-            }
-            else
-            {
-                Debug.LogError("CameraTransition component not found on the specified GameObject.");
-            }
-        }
-        else
-        {
-            Debug.LogError("CameraTransition GameObject is not assigned.");
-        }
     }
 }

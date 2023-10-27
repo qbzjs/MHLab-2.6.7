@@ -39,7 +39,7 @@ public class HealthModule : NetworkBehaviour
    
     [HideInInspector]
     public NetworkVariable<float> health = new NetworkVariable<float>(
-    value: 120,
+    value: 100,
     NetworkVariableReadPermission.Everyone);
     
     public override void OnNetworkSpawn()
@@ -47,25 +47,26 @@ public class HealthModule : NetworkBehaviour
         health.Value = maxHealth;
     }
     
-    private void OnCollisionEnter(Collision co)
+    private void OnTriggerEnter(Collider other)
     {
-        if (co.gameObject.tag == "Bullet")
+        if (other.gameObject.tag == "Projectiles")
         {
-            health.Value -= 15f;
-        }
-    }
-
-    void Update()
-    {
-        if (health.Value <= 0)
-        {
-            Die();
+            Projectile projectileScript = other.gameObject.GetComponent<Projectile>();
+            
+            health.Value -= projectileScript.damage;
+    
+            if (health.Value <= 0)
+            {
+                Die();
+            }
+            
+            Debug.Log("Player Hit By Projectile From " + other.gameObject.name + " For " + projectileScript.damage + " Damage");
         }
     }
 
     void Die()
     {
-        transform.position = new Vector3(Random.Range(positionRange, -positionRange), 0, Random.Range(positionRange, -positionRange));
+        transform.position = new Vector3(Random.Range(positionRange, -positionRange), Random.Range(positionRange, -positionRange), 0);
         Debug.Log("Player Died");
         health.Value = maxHealth;
     }  

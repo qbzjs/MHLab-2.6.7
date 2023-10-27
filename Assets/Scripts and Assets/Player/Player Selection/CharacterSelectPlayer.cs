@@ -10,12 +10,11 @@ public class CharacterSelectPlayer : MonoBehaviour {
 
     [SerializeField] private int playerIndex;
     [SerializeField] private GameObject readyGameObject;
-    [SerializeField] private PlayerVisual playerVisual;
-    [SerializeField] private TextMeshPro playerNameText;
+    [SerializeField] private TMP_Text playerNameText;
 
     private void Start() {
         MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += MultiplayerManager_OnPlayerDataNetworkListChanged;
-        CharacterSelectReady.Instance.OnReadyChanged += CharacterSelectReady_OnReadyChanged;
+        //CharacterSelectReady.Instance.OnReadyChanged += CharacterSelectReady_OnReadyChanged;
 
         UpdatePlayer();
     }
@@ -34,7 +33,7 @@ public class CharacterSelectPlayer : MonoBehaviour {
 
             PlayerData playerData = MultiplayerManager.Instance.GetPlayerDataFromPlayerIndex(playerIndex);
 
-            readyGameObject.SetActive(CharacterSelectReady.Instance.IsPlayerReady(playerData.clientId));
+            //readyGameObject.SetActive(VoteManager.Instance.IsPlayerReady(playerData.clientId));
 
             playerNameText.text = playerData.playerName.ToString();
         } else {

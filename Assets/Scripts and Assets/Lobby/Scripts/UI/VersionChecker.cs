@@ -8,15 +8,14 @@ using TMPro;
 
 public class VersionChecker : MonoBehaviour
 {
-    public string githubVersionURL = "https://github.com/LukeGus/Propulse/blob/main/version.txt";
+    public string githubVersionURL;
     public string localVersion;
-    private string onlineVersion;
-
     public GameObject updatePrompt;
     public TMP_Text updateText;
-    public GameObject authenticationObject;
+    
+    private string onlineVersion;
 
-    void Start()
+    void Awake()
     {
         // Start the version checking coroutine.
         StartCoroutine(CheckVersion());
@@ -37,9 +36,7 @@ public class VersionChecker : MonoBehaviour
             // The versions do not match.
             // Enable the updatePrompt GameObject and set the updateText.
             updatePrompt.SetActive(true);
-            updateText.text = "Your Game is Outdated\n\nPlease update your game to " + onlineVersion;
-
-            authenticationObject.SetActive(false);
+            updateText.text = "Your game is outdated. The launcer should have automatically updated your game but has failed. Try redownloading the launcher on the karmaa.tech website. If you see this message again, contact an admin on discord.\n\nPlease update your game to " + onlineVersion;
         }
         else
         {

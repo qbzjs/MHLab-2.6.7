@@ -8,16 +8,17 @@ using Unity.Services.Matchmaker;
 using Unity.Services.Matchmaker.Models;
 using UnityEngine;
 using UnityEngine.UI;
+using Michsky.MUIP;
 
 public class MatchmakerUI : MonoBehaviour {
 
 
     public const string DEFAULT_QUEUE = "Queue-A";
 
-
-    [SerializeField] private Button findMatchButton;
     [SerializeField] private Transform lookingForMatchTransform;
-
+    [SerializeField] private Transform connectingTransform;
+    [SerializeField] private GameObject matchmakingWindow;
+    [SerializeField] private NotificationManager notification;
 
     private CreateTicketResponse createTicketResponse;
     private float pollTicketTimer;
@@ -26,16 +27,14 @@ public class MatchmakerUI : MonoBehaviour {
 
     private void Awake() {
         lookingForMatchTransform.gameObject.SetActive(false);
-
-        findMatchButton.onClick.AddListener(() => {
-            FindMatch();
-        });
+        connectingTransform.gameObject.SetActive(false);
     }
 
-    private async void FindMatch() {
+    public async void FindMatch() {
         Debug.Log("FindMatch");
 
         lookingForMatchTransform.gameObject.SetActive(true);
+        matchmakingWindow.SetActive(true);
 
         createTicketResponse = await MatchmakerService.Instance.CreateTicketAsync(new List<Unity.Services.Matchmaker.Models.Player> {
              new Unity.Services.Matchmaker.Models.Player(AuthenticationService.Instance.PlayerId, 
@@ -83,6 +82,8 @@ public class MatchmakerUI : MonoBehaviour {
             Debug.Log("multiplayAssignment.Status " + multiplayAssignment.Status);
             switch (multiplayAssignment.Status) {
                 case MultiplayAssignment.StatusOptions.Found:
+                    CreateNotificationServerFound();
+                    
                     createTicketResponse = null;
 
                     Debug.Log(multiplayAssignment.Ip + " " + multiplayAssignment.Port);
@@ -99,17 +100,43 @@ public class MatchmakerUI : MonoBehaviour {
                 case MultiplayAssignment.StatusOptions.Failed:
                     createTicketResponse = null;
                     Debug.Log("Failed to create Multiplay server!");
+                    CreateNotificationAllocationError();
                     lookingForMatchTransform.gameObject.SetActive(false);
+                    matchmakingWindow.SetActive(false);
                     break;
                 case MultiplayAssignment.StatusOptions.Timeout:
                     createTicketResponse = null;
                     Debug.Log("Multiplay Timeout!");
+                    CreateNotificationTimeout();
                     lookingForMatchTransform.gameObject.SetActive(false);
+                    matchmakingWindow.SetActive(false);
                     break;
             }
         }
 
     }
-
-
+    
+    private void CreateNotificationAllocationError()
+    {
+        notification.title = "Server Allocation Error";
+        notification.description = "Failed to allocate the server. Please try again.";
+        notification.UpdateUI(); // Update UI
+        notification.Open(); // Open notification
+    }
+    
+    private void CreateNotificationTimeout()
+    {
+        notification.title = "Server Timeout";
+        notification.description = "Matchmaking took too long to .complete Please try again.";
+        notification.UpdateUI(); // Update UI
+        notification.Open(); // Open notification
+    }
+    
+    private void CreateNotificationServerFound()
+    {
+        notification.title = "Server Found";
+        notification.description = "The server has been found. You will now be connected.";
+        notification.UpdateUI(); // Update UI
+        notification.Open(); // Open notification
+    }
 }

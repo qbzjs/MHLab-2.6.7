@@ -16,8 +16,6 @@ public class MultiplayerManager : NetworkBehaviour
 
     public static bool playMultiplayer = true;
 
-    public GameObject lobby;
-
     public event EventHandler OnTryingToJoinGame;
     public event EventHandler OnFailedToJoinGame;
     public event EventHandler OnPlayerDataNetworkListChanged;
@@ -43,12 +41,8 @@ public class MultiplayerManager : NetworkBehaviour
         {
             // Singleplayer
             StartHost();
-            Loader.LoadNetwork(Loader.Scene.GameScene);
+            Loader.LoadNetwork("GameScene");
         }
-
-#if DEDICATED_SERVER
-        lobby.SetActive(true);
-#endif
     }
 
     public string GetPlayerName()

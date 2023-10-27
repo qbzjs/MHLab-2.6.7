@@ -28,8 +28,9 @@ public static class Loader {
         SceneManager.LoadScene(Scene.LoadingScene.ToString());
     }
 
-    public static void LoadNetwork(Scene targetScene) {
-        NetworkManager.Singleton.SceneManager.LoadScene(targetScene.ToString(), LoadSceneMode.Single);
+    public static void LoadNetwork(string mapName)
+    {
+        NetworkManager.Singleton.SceneManager.LoadScene(mapName, LoadSceneMode.Single);
     }
 
     public static void LoaderCallback() {
