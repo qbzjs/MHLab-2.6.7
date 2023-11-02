@@ -1,26 +1,34 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
+using Unity.RemoteConfig;
 
 public class WeaponManager : NetworkBehaviour
 {
     [Header("Customize")]
-    public GameObject projectile;
     public float projectileSpeed;
-    public Transform firePoint;
-    public int maxAmmo;
+    public float maxAmmo;
     public float reloadTime;
-    public Camera camera;
     public float damage;
     public float maxRotation;
-    public Transform playerTransform;
+    public string maxAmmoConfigKey;
+    public string reloadTimeConfigKey;
+    public string projectileSpeedConfigKey;
+    public string damageConfigKey;
     
     [Header("References")]
     public Animator animator;
+    public GameObject projectile;
+    public Transform firePoint;
+    public Camera camera;
+    public Transform playerTransform;
+    public struct userAttributes {}
+    public struct appAttributes {}
     
     [Header("Private Variables")]
-    private int currentAmmo;
+    private float currentAmmo;
     private Vector3 destination;
     private bool isReloading;
     
@@ -31,6 +39,8 @@ public class WeaponManager : NetworkBehaviour
     
     void Update()
     {
+ #if !DEDICATED_SERVER
+        
         Vector3 cursorScreenPosition = Input.mousePosition;
         Vector3 cursorWorldPosition = camera.ScreenToWorldPoint(new Vector3(cursorScreenPosition.x, cursorScreenPosition.y, transform.position.z - camera.transform.position.z));
     
@@ -56,11 +66,53 @@ public class WeaponManager : NetworkBehaviour
         // Apply the new Z rotation while preserving the original Y and X rotations
         Quaternion originalRotation = transform.rotation;
         transform.rotation = Quaternion.Euler(originalRotation.eulerAngles.x, originalRotation.eulerAngles.y, angle);
+        
+#endif
     }
 
     private void Awake()
     {
         playerInput = new PlayerMovementInput();
+        
+        FetchRemoteConfiguration();
+    }
+    
+    private void FetchRemoteConfiguration()
+    {
+        if(gameObject.active)
+        {
+            ConfigManager.FetchCompleted += ApplyRemoteConfiguration;
+            ConfigManager.FetchConfigs<userAttributes, appAttributes> (new userAttributes(), new appAttributes());
+        }    
+    }
+    
+    private void ApplyRemoteConfiguration(ConfigResponse response)
+    {
+        switch (response.requestOrigin)
+        {
+            case ConfigOrigin.Default:
+                Debug.Log("No settings loaded this session; using default values.");
+                break;
+            case ConfigOrigin.Cached:
+                Debug.Log("No settings loaded this session; using cached values from a previous session.");
+                break;
+            case ConfigOrigin.Remote:
+                Debug.Log("New settings loaded this session; update values accordingly.");
+                
+                SetRemoteConfigurationValues();
+                
+                break;
+        }    
+    }
+    
+    private void SetRemoteConfigurationValues()
+    {
+        maxAmmo = ConfigManager.appConfig.GetFloat(maxAmmoConfigKey);
+        reloadTime = ConfigManager.appConfig.GetFloat(reloadTimeConfigKey);
+        projectileSpeed = ConfigManager.appConfig.GetFloat(projectileSpeedConfigKey);
+        damage = ConfigManager.appConfig.GetFloat(damageConfigKey);
+        
+        Debug.Log("maxAmmo: " + maxAmmo + " reloadTime: " + reloadTime + " projectileSpeed: " + projectileSpeed + " damage: " + damage);
     }
     
     private void Start()
@@ -106,8 +158,7 @@ public class WeaponManager : NetworkBehaviour
         yield return new WaitForSeconds(reloadTime - .25f);
         animator.SetBool("Reloading", false);
         yield return new WaitForSeconds(1f);
-
-
+        
         currentAmmo = maxAmmo;
         isReloading = false;
     }
@@ -126,15 +177,15 @@ public class WeaponManager : NetworkBehaviour
     
         SpawnBulletServerRPC(firePoint.position, firePoint.rotation);
     }
-
+    
     [ServerRpc]
     private void SpawnBulletServerRPC(Vector3 position, Quaternion rotation, ServerRpcParams serverRpcParams = default)
     {
         GameObject instantiatedBullet = Instantiate(projectile, position, rotation);
-
-        instantiatedBullet.GetComponent<Projectile>().projectileSpeed = projectileSpeed;
-        instantiatedBullet.GetComponent<Projectile>().damage = damage;
-
+        
         instantiatedBullet.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId);
+
+        instantiatedBullet.GetComponent<Projectile>().projectileSpeed.Value = projectileSpeed;
+        instantiatedBullet.GetComponent<Projectile>().damage.Value = damage;
     }
 }

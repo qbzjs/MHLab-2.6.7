@@ -39,13 +39,17 @@ public class NetworkDisabler : NetworkBehaviour
         }    
     }
     
-    void DisableWeaponManagers(GameObject parent)
+    private void DisableWeaponManagers(GameObject parentObject)
     {
-        WeaponManager[] weaponManagers = parent.GetComponentsInChildren<WeaponManager>(true);
-
-        foreach (WeaponManager weaponManager in weaponManagers)
+        WeaponManager weaponManager = parentObject.GetComponent<WeaponManager>();
+        if (weaponManager != null)
         {
             weaponManager.enabled = false;
+        }
+
+        foreach (Transform child in parentObject.transform)
+        {
+            DisableWeaponManagers(child.gameObject);
         }
     }
 }

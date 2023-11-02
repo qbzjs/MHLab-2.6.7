@@ -24,7 +24,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Transform spawnPoint9;
     [SerializeField] private Transform spawnPoint10;
     
-    [HideInInspector] public int playerCount;
+    [HideInInspector] public float playerCount = 0;
     
     [SerializeField] private float targetMinutes;
     private float currentTime;
@@ -33,9 +33,7 @@ public class GameManager : NetworkBehaviour
 #if DEDICATED_SERVER
     
     private async void Start()
-    {
-        playerCount = 0;
-        
+    {     
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
 
         await MultiplayService.Instance.UnreadyServerAsync();
@@ -75,12 +73,12 @@ public class GameManager : NetworkBehaviour
 #if DEDICATED_SERVER
         Debug.Log("Client disconnected" + clientId);
     
-        if (playerCount <= 1)
+        if (playerCount == 0)
         {
             Application.Quit();
         }
     
-        playerCount--;
+        playerCount -= 1;
 #endif
     }
     
@@ -100,7 +98,7 @@ public class GameManager : NetworkBehaviour
                 GameObject player = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
                 player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
     
-                playerCount ++;
+                playerCount += 1;
     
                 Debug.Log("Spawned Player at spawn point " + (i + 1));
             }

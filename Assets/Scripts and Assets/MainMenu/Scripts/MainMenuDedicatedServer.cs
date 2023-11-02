@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MainMenuDedicatedServer : MonoBehaviour {
 
-#if DEDICATED_SERVER
     private void Start() 
     {
         Application.targetFrameRate = 60;
@@ -14,6 +13,5 @@ public class MainMenuDedicatedServer : MonoBehaviour {
         Debug.Log("DEDICATED_SERVER");
         Loader.Load(Loader.Scene.LobbyScene);
     }
-#endif
 
 }

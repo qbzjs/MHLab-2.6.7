@@ -8,9 +8,8 @@ using Unity.Services.Multiplay;
 public class ServerDeallocate : NetworkBehaviour
 {
         
-    [SerializeField] private float targetMinutes;
-    private float currentTime;
-    private bool timerRunning = false;
+    [SerializeField] private float countdownTime;
+    private bool isCounting = true;
     
     private MultiplayEventCallbacks m_MultiplayEventCallbacks;
     private IServerEvents m_ServerEvents; 
@@ -58,33 +57,31 @@ public class ServerDeallocate : NetworkBehaviour
         Application.Quit();
     }
     
-    private void Update()
-    {
-        if (timerRunning)
-        {
-            currentTime += Time.deltaTime;
-
-            if (currentTime >= targetMinutes * 60.0f)
-            {
-                TimerComplete();
-            }
-        }
-    }
+#if DEDICATED_SERVER    
     
     private void StartTimer()
     {
-        currentTime = 0.0f;
-        timerRunning = true;
+        isCounting = true;
     }
-
-    private void TimerComplete()
+    
+#endif
+    
+    private void Update()
     {
-        OnTimerComplete();
-        
-        timerRunning = false;
+        if (isCounting)
+        {
+            countdownTime -= Time.deltaTime;
+            
+            if (countdownTime <= 0)
+            {
+                countdownTime = 0;
+                isCounting = false;
+                TimerFinished();
+            }
+        }
     }
 
-    private void OnTimerComplete()
+    private void TimerFinished()
     {
         Debug.Log("Timer Complete");
 

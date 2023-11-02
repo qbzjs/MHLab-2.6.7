@@ -63,9 +63,10 @@ public class LobbyManager : MonoBehaviour {
 
     private void Start() {
         MultiplayerManager.Instance.OnPlayerDataNetworkListChanged += MultiplayerManager_OnPlayerDataNetworkListChanged;
-        VoteManager.OnInstanceCreated += CharacterSelectReady_OnInstanceCreated;
+        //VoteManager.OnInstanceCreated += CharacterSelectReady_OnInstanceCreated;
     }
 
+    /*
     private void CharacterSelectReady_OnInstanceCreated(object sender, EventArgs e) {
         VoteManager.Instance.OnGameStarting += CharacterSelectReady_OnGameStarting;
     }
@@ -77,6 +78,7 @@ public class LobbyManager : MonoBehaviour {
         }
 #endif
     }
+    */
 
     private async void MultiplayerManager_OnPlayerDataNetworkListChanged(object sender, EventArgs e) {
 #if DEDICATED_SERVER

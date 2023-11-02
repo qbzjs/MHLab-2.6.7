@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using LootLocker.Requests;
 using TMPro;
+using Michsky.MUIP;
 
 public class LootLockerAuthentication : MonoBehaviour
 {   
@@ -21,7 +22,7 @@ public class LootLockerAuthentication : MonoBehaviour
     public GameObject SignUpPage;
     public GameObject ResetPasswordPage;
     public GameObject VerifyPage;
-    public GameObject OperationFailed;
+    [SerializeField] private ModalWindowManager errorWindow;
     public GameObject LogInButton;
     public GameObject SignUpButton;
     public GameObject Wait;
@@ -151,7 +152,7 @@ public class LootLockerAuthentication : MonoBehaviour
             {
                 Debug.Log("Error while creating user");
 
-                OperationFailed.SetActive(true);
+                Error("Create User Error", "Error while creating user. Please try again");
 
                 return;
             }
@@ -160,8 +161,6 @@ public class LootLockerAuthentication : MonoBehaviour
 
             VerifyPage.SetActive(true);
             SignUpPage.SetActive(false);
-
-            OperationFailed.SetActive(false);
 
         });
     }
@@ -176,7 +175,7 @@ public class LootLockerAuthentication : MonoBehaviour
                 {
                     Debug.Log("error while logging in");
 
-                    OperationFailed.SetActive(true);
+                    Error("Login Error", "Error while logging in. Please try again");
 
                     LogInButton.SetActive(true);
                     SignUpButton.SetActive(true);
@@ -190,7 +189,7 @@ public class LootLockerAuthentication : MonoBehaviour
                 {
                     Debug.Log("error while starting session");
 
-                    OperationFailed.SetActive(true);
+                    Error("Session Start Error", "Error while starting the user sesion. Please try again");
 
                     LogInButton.SetActive(true);
                     SignUpButton.SetActive(true);
@@ -213,10 +212,12 @@ public class LootLockerAuthentication : MonoBehaviour
                         {
                             Debug.Log("error starting LootLocker session");
 
-                            OperationFailed.SetActive(true);
+                            Error("Session Start Error", "Error while starting the user sesion. Please try again");
 
                             return;
                         }
+                        
+                        PlayerPrefs.SetString("PlayerULID", response.player_ulid);
 
                         Debug.Log("session started successfully");
 
@@ -257,7 +258,7 @@ public class LootLockerAuthentication : MonoBehaviour
                 }
             });
 
-        }, rememberMe);
+        });
     }
 
     public void ResetPassword()
@@ -268,7 +269,7 @@ public class LootLockerAuthentication : MonoBehaviour
             {
                 Debug.Log("error requesting password reset");
 
-                OperationFailed.SetActive(true);
+                Error("Password Reset Error", "Error while requesting a password reset. Please try again");
 
                 return;
             }
@@ -303,5 +304,13 @@ public class LootLockerAuthentication : MonoBehaviour
                 Debug.Log("Error setting player name");
             }
         });
+    }
+    
+    void Error(string title, string description)
+    {
+        errorWindow.titleText = title;
+        errorWindow.descriptionText = description;
+        errorWindow.UpdateUI();
+        errorWindow.Open();
     }
 }

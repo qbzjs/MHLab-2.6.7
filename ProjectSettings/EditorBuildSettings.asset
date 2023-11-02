@@ -18,6 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/CharacterSelectScene.unity
     guid: ef11a265631e36c42a4f15c9b9aa6bc3
   - enabled: 1
-    path: Assets/Scenes/DemoScene.unity
+    path: Assets/Scenes/Demo_Scene.unity
     guid: 31c9620b036cfd54596ef5618856dd3b
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings: {fileID: 11400000, guid: b08b6dcab019340489cb7679889d68cd, type: 2}

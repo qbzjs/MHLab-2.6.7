@@ -40,27 +40,28 @@ public class HealthModule : NetworkBehaviour
     [HideInInspector]
     public NetworkVariable<float> health = new NetworkVariable<float>(
     value: 100,
-    NetworkVariableReadPermission.Everyone);
+    NetworkVariableReadPermission.Everyone,
+    NetworkVariableWritePermission.Owner);
     
     public override void OnNetworkSpawn()
     {
         health.Value = maxHealth;
     }
     
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (other.gameObject.tag == "Projectiles")
-        {
-            Projectile projectileScript = other.gameObject.GetComponent<Projectile>();
+        if (collision.gameObject.tag == "Projectiles")
+        {   
+            Projectile projectileScript = collision.gameObject.GetComponent<Projectile>();
             
-            health.Value -= projectileScript.damage;
+            health.Value -= projectileScript.damage.Value;
     
             if (health.Value <= 0)
             {
                 Die();
             }
             
-            Debug.Log("Player Hit By Projectile From " + other.gameObject.name + " For " + projectileScript.damage + " Damage");
+            Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage + " Damage");
         }
     }
 

@@ -39,3 +39,23 @@ u
 EAssets/Scripts and Assets/MainMenu/Scripts/MainMenuDedicatedServer.cs,0\2\02b9e82722969b4f427962ecadc8034ce6fda9e3
 Z
 *Assets/Other/MapMagic/Tools/ObjectsPool.cs,e\7\e7bf2ceb4d3dfee90bccabaf23e88be35f5828e0
+j
+:Assets/Scripts and Assets/Lobby/Scripts/UI/MatchmakerUI.cs,1\6\1696c2c70d9d616f5c8426eba208daea25ca9f7a
+j
+:Assets/Scripts and Assets/Lobby/Scripts/UI/ConnectingUI.cs,d\1\d1a6f5ade4094ce901187a54f1cc56a23fa517df
+h
+8Assets/Scripts and Assets/Dependencies/Scripts/Loader.cs,8\1\81324e47f13c3fa73c720c66d0c3c25824ac5b62
+o
+?Assets/Scripts and Assets/Lobby/Scripts/UI/CharacterSelectUI.cs,d\f\df4b5f02f1d6a42ae85ac2049933358e88f984bc
+m
+=Assets/Scripts and Assets/Lobby/Scripts/UI/SettingsManager.cs,a\3\a34eef79a2bf225785758ceec6e8479e9d9a92e7
+y
+IAssets/Scripts and Assets/Lobby/Scripts/Multiplayer/MultiplayerManager.cs,2\9\293eb67912dda817631700678a6fc4fa3f90f3d4
+‚
+RAssets/Scripts and Assets/Lobby/Scripts/Authentication/LootLockerAuthentication.cs,1\e\1e41eeb6dffcb7e54ac8a178da64ef52d9f7e46e
+o
+?Assets/Scripts and Assets/Player/Escape Settings/BackToLobby.cs,9\7\97466076aa9ff7e2b1a4fd389b16759c228a8da7
+h
+8Assets/Scripts and Assets/Lobby/Scripts/UI/MainMenuUI.cs,e\0\e053b2a9fc79358d1f941dca94b46625e2f81f69
+n
+>Assets/Scripts and Assets/Player/Escape Settings/EscapeMenu.cs,2\e\2e5d71b6d1fa8410faa5fbd60568590e5fb814e6

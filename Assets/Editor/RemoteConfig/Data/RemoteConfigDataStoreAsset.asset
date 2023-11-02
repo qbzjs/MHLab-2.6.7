@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
+  m_Name: RemoteConfigDataStoreAsset
+  m_EditorClassIdentifier: 
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"5fa09ce5-a2a1-4186-8ebd-d8c650344b45\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"maxAmmo\",\r\n      \"type\": \"float\",\r\n     
+    \"value\": 31.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
+    \"08723009-f004-42be-823d-59bbc21d1f0e\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"key\": \"reloadTime\",\r\n      \"type\": \"float\",\r\n      \"value\": 2.0\r\n   
+    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"838017ba-652e-4e09-908f-794565756250\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"projectileSpeed\",\r\n      \"type\":
+    \"float\",\r\n      \"value\": 60.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\":
+    {\r\n      \"entityId\": \"8c626b3d-e6f5-46ca-a454-becbf0b7799e\"\r\n    },\r\n   
+    \"rs\": {\r\n      \"key\": \"damage\",\r\n      \"type\": \"float\",\r\n     
+    \"value\": 10.0\r\n    }\r\n  }\r\n]"
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"5fa09ce5-a2a1-4186-8ebd-d8c650344b45\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"maxAmmo\",\r\n      \"type\": \"float\",\r\n     
+    \"value\": 31.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
+    \"08723009-f004-42be-823d-59bbc21d1f0e\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"key\": \"reloadTime\",\r\n      \"type\": \"float\",\r\n      \"value\": 2.0\r\n   
+    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"838017ba-652e-4e09-908f-794565756250\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"projectileSpeed\",\r\n      \"type\":
+    \"float\",\r\n      \"value\": 60.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\":
+    {\r\n      \"entityId\": \"8c626b3d-e6f5-46ca-a454-becbf0b7799e\"\r\n    },\r\n   
+    \"rs\": {\r\n      \"key\": \"damage\",\r\n      \"type\": \"float\",\r\n     
+    \"value\": 10.0\r\n    }\r\n  }\r\n]"
+  _environments: "[\r\n  {\r\n    \"projectId\": \"6c2255db-6381-4962-9ccf-102a99245be9\",\r\n   
+    \"name\": \"production\",\r\n    \"id\": \"4e19d1ba-9e13-4e25-9772-4dd90261ac46\",\r\n   
+    \"isDefault\": true,\r\n    \"createdAt\": \"2023-09-26T15:01:26Z\",\r\n    \"updatedAt\":
+    \"2023-09-26T15:01:26Z\"\r\n  }\r\n]"
