@@ -34,13 +34,16 @@ public class BuildScript
     static void BuildLinuxServer()
     {
         string projectName = "TerronServer"; // Set the name of your project here
-        string outputPath = $"Builds/Linux/{projectName}Server";
+        string outputPath = $"Builds/Linux/{projectName}Server.x86_64";
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
         buildPlayerOptions.scenes = GetEnabledScenes();
         buildPlayerOptions.locationPathName = outputPath;
         buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
         buildPlayerOptions.subtarget = (int)StandaloneBuildSubtarget.Server;
+        
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "DEDICATED_SERVER");
+        
         BuildPipeline.BuildPlayer(buildPlayerOptions);
     }
 }
