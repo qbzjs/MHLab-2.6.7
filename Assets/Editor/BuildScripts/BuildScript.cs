@@ -30,6 +30,7 @@ public class BuildScript
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
         
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "WINDOWS64");
         
         EditorUserBuildSettings.development = false;
 
