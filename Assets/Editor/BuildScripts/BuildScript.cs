@@ -21,7 +21,7 @@ public class BuildScript
     static void BuildWindows()
     {
         string projectName = "Terron"; // Set the name of your project here
-        string outputPath = $"Builds/Windows/{projectName}.exe";
+        string outputPath = $"Builds/Windows/{projectName}64.exe";
         
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
         
@@ -39,8 +39,8 @@ public class BuildScript
     [MenuItem("Custom/Build/Linux Server")]
     static void BuildLinuxServer()
     {
-        string projectName = "TerronServer"; // Set the name of your project here
-        string outputPath = $"Builds/Linux/{projectName}Server.x86_64";
+        string projectName = "Terron"; // Set the name of your project here
+        string outputPath = $"Builds/Linux/{projectName}64DedicatedServer.x86_64";
         
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
         
