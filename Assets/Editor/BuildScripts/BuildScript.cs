@@ -31,7 +31,7 @@ public class BuildScript
         buildPlayerOptions.subtarget = (int)StandaloneBuildSubtarget.Player;
         
         // Set the scripting backend to IL2CPP for Windows 64-bit
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
+        //PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
         //PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "WINDOWS64");
 
         // Disable development build options
@@ -54,7 +54,7 @@ public class BuildScript
         buildPlayerOptions.subtarget = (int)StandaloneBuildSubtarget.Server;
 
         // Set the scripting backend to IL2CPP for Linux 64-bit Dedicated Server
-        PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
+        //PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
         //PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "DEDICATED_SERVER");
         
         // Disable development build options
