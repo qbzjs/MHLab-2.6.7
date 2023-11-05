@@ -17,7 +17,7 @@ public class BuildScript
         return enabledScenes.ToArray();
     }
 
-    [MenuItem("Custom/Build/Windows 64-bit")]
+    [MenuItem("Build/Build/Windows 64-bit")]
     static void BuildWindows64()
     {
         string projectName = "Terron"; // Set the name of your project here
@@ -40,7 +40,7 @@ public class BuildScript
         BuildPipeline.BuildPlayer(buildPlayerOptions);
     }
 
-    [MenuItem("Custom/Build/Linux 64-bit Dedicated Server")]
+    [MenuItem("Build/Build/Linux 64-bit Dedicated Server")]
     static void BuildLinuxServer()
     {
         string projectName = "Terron"; // Set the name of your project here

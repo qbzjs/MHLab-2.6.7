@@ -152,7 +152,7 @@ public class LootLockerAuthentication : MonoBehaviour
             {
                 Debug.Log("Error while creating user");
 
-                Error("Create User Error", "Error while creating user. Please try again");
+                Error("Create User Error", "Error while creating user. Please try again.");
 
                 return;
             }
@@ -175,7 +175,7 @@ public class LootLockerAuthentication : MonoBehaviour
                 {
                     Debug.Log("error while logging in");
 
-                    Error("Login Error", "Error while logging in. Please try again");
+                    Error("Login Error", "Error while logging in. Please try again.");
 
                     LogInButton.SetActive(true);
                     SignUpButton.SetActive(true);
@@ -189,7 +189,7 @@ public class LootLockerAuthentication : MonoBehaviour
                 {
                     Debug.Log("error while starting session");
 
-                    Error("Session Start Error", "Error while starting the user sesion. Please try again");
+                    Error("Session Start Error", "Error while starting the user sesion. Please try again.");
 
                     LogInButton.SetActive(true);
                     SignUpButton.SetActive(true);
@@ -212,7 +212,7 @@ public class LootLockerAuthentication : MonoBehaviour
                         {
                             Debug.Log("error starting LootLocker session");
 
-                            Error("Session Start Error", "Error while starting the user sesion. Please try again");
+                            Error("Session Start Error", "Error while starting the user sesion. Please try again.");
 
                             return;
                         }
@@ -269,7 +269,7 @@ public class LootLockerAuthentication : MonoBehaviour
             {
                 Debug.Log("error requesting password reset");
 
-                Error("Password Reset Error", "Error while requesting a password reset. Please try again");
+                Error("Password Reset Error", "Error while requesting a password reset. Please try again.");
 
                 return;
             }
