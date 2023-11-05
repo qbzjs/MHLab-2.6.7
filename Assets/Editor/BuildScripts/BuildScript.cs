@@ -21,7 +21,7 @@ public class BuildScript
     static void BuildWindows64()
     {
         string projectName = "Terron"; // Set the name of your project here
-        string outputPath = $"Builds/Windows64/{projectName}Windows64.exe";
+        string outputPath = $"Builds/Windows64/{projectName}64Windows.exe";
         
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
         
