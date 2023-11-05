@@ -28,6 +28,7 @@ public class BuildScript
         buildPlayerOptions.scenes = GetEnabledScenes();
         buildPlayerOptions.locationPathName = outputPath;
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
+        buildPlayerOptions.subtarget = (int)StandaloneBuildSubtarget.PLayer;
         
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "WINDOWS64");
