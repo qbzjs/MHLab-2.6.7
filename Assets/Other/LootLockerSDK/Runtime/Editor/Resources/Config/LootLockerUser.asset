@@ -9,7 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faca5d1afca54ed4a8113dae40b9e021, type: 3}
-  m_Name: LootLockerUser
+  m_Script: {fileID: 11500000, guid: 182cd195a28310e479cddf7ff82822f8, type: 3}
+  m_Name: LootLockerConfig
   m_EditorClassIdentifier: 
-  serializedUser: 
+  apiKey: dev_6284671a8a9a4dcdb96abe3b243140b7
+  token: c06435a1f5cab736c825376b638a833090155344
+  adminToken: 71a0a7324fa91c38bfab597992b6ce68b2f6cc52
+  refreshToken: 
+  domainKey: nifklqpm
+  gameID: 0
+  game_version: 1.0.0.0
+  deviceID: 
+  url: https://api.lootlocker.io/v1
+  adminUrl: https://nifklqpm.api.lootlocker.io/admin
+  playerUrl: https://nifklqpm.api.lootlocker.io/player
+  userUrl: https://nifklqpm.api.lootlocker.io/game
+  baseUrl: https://nifklqpm.api.lootlocker.io
+  clientSideRequestTimeOut: 5
+  currentDebugLevel: 0
+  allowTokenRefresh: 1
