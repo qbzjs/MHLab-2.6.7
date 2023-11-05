@@ -41,7 +41,7 @@ public class BuildScript
     }
 
     [MenuItem("Build/Build/Linux 64-bit Dedicated Server")]
-    static void BuildLinuxServer()
+    static void BuildLinux64DedicatedServer()
     {
         string projectName = "Terron"; // Set the name of your project here
         string outputPath = $"Builds/Linux64DedicatedServer/{projectName}64DedicatedServer.x86_64";
