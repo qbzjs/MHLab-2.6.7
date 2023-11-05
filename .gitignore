@@ -3,7 +3,6 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 /[Ll]ibrary/
-![Ll]ibrary/PackageCache/com.lootlocker.lootlockersdk@285486d6e4/
 /[Tt]emp/
 /[Bb]uilds/
 /[Oo]bj/
