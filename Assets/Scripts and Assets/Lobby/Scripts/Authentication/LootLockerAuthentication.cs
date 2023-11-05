@@ -154,6 +154,8 @@ public class LootLockerAuthentication : MonoBehaviour
 
                 Error("Create User Error", "Error while creating user. Please try again.");
 
+                Wait.SetActive(false);
+
                 return;
             }
 
@@ -177,6 +179,8 @@ public class LootLockerAuthentication : MonoBehaviour
 
                     Error("Login Error", "Error while logging in. Please try again.");
 
+                    Wait.SetActive(false);
+
                     LogInButton.SetActive(true);
                     SignUpButton.SetActive(true);
 
@@ -190,6 +194,8 @@ public class LootLockerAuthentication : MonoBehaviour
                     Debug.Log("error while starting session");
 
                     Error("Session Start Error", "Error while starting the user sesion. Please try again.");
+
+                    Wait.SetActive(false);
 
                     LogInButton.SetActive(true);
                     SignUpButton.SetActive(true);
@@ -213,6 +219,8 @@ public class LootLockerAuthentication : MonoBehaviour
                             Debug.Log("error starting LootLocker session");
 
                             Error("Session Start Error", "Error while starting the user sesion. Please try again.");
+
+                            Wait.SetActive(false);
 
                             return;
                         }
@@ -270,6 +278,8 @@ public class LootLockerAuthentication : MonoBehaviour
                 Debug.Log("error requesting password reset");
 
                 Error("Password Reset Error", "Error while requesting a password reset. Please try again.");
+
+                Wait.SetActive(false);
 
                 return;
             }
