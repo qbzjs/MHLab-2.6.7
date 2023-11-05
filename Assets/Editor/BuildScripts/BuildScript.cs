@@ -51,8 +51,8 @@ public class BuildScript
         buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
         buildPlayerOptions.subtarget = (int)StandaloneBuildSubtarget.Server;
 
-        PlayerSettings.SetScriptingBackend(Build.NamedBuildTarget.Server, ScriptingImplementation.IL2CPP);
-        PlayerSettings.SetScriptingDefineSymbolsForGroup(Build.NamedBuildTarget.Server, "DEDICATED_SERVER");
+        PlayerSettings.SetScriptingBackend(BuildTargetGroup Server, ScriptingImplementation.IL2CPP);
+        PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup Server, "DEDICATED_SERVER");
         
         EditorUserBuildSettings.development = false;
 
