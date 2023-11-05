@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   apiKey: dev_6284671a8a9a4dcdb96abe3b243140b7
   token: 
-  adminToken: 
+  adminToken: b94a3b1cdd5beb0827fe340f1221774be82b9726
   refreshToken: 
   domainKey: nifklqpm
   gameID: 0
   game_version: 1.0.0.0
-  deviceID: defaultPlayerId
+  deviceID: 
   url: https://api.lootlocker.io/v1
   adminUrl: https://nifklqpm.api.lootlocker.io/admin
   playerUrl: https://nifklqpm.api.lootlocker.io/player
