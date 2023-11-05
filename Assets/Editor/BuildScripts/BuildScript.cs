@@ -36,9 +36,6 @@ public class BuildScript
         
         // Disable Burst Debug Information
         PlayerSettings.SetBurstBuildEnabled(BuildTargetGroup.Standalone, false);
-        
-        // Disable development build options
-        EditorUserBuildSettings.development = false;
 
         BuildPipeline.BuildPlayer(buildPlayerOptions);
     }
@@ -59,9 +56,6 @@ public class BuildScript
         // Set the scripting backend to IL2CPP for Linux 64-bit Dedicated Server
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "DEDICATED_SERVER");
-        
-        // Disable Burst Debug Information
-        PlayerSettings.SetBurstBuildEnabled(BuildTargetGroup.Standalone, false);
         
         // Disable development build options
         EditorUserBuildSettings.development = false;
