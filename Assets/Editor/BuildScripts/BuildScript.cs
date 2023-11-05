@@ -33,9 +33,9 @@ public class BuildScript
         // Set the scripting backend to IL2CPP for Windows 64-bit
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "WINDOWS64");
-        
-        // Disable Burst Debug Information
-        PlayerSettings.SetBurstBuildEnabled(BuildTargetGroup.Standalone, false);
+
+        // Disable development build options
+        EditorUserBuildSettings.development = false;
 
         BuildPipeline.BuildPlayer(buildPlayerOptions);
     }
