@@ -17,8 +17,8 @@ public class BuildScript
         return enabledScenes.ToArray();
     }
 
-    [MenuItem("Custom/Build/Windows")]
-    static void BuildWindows()
+    [MenuItem("Custom/Build/Windows 64-bit")]
+    static void BuildWindows64()
     {
         string projectName = "Terron"; // Set the name of your project here
         string outputPath = $"Builds/Windows64/{projectName}64.exe";
@@ -30,15 +30,20 @@ public class BuildScript
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
         buildPlayerOptions.subtarget = (int)StandaloneBuildSubtarget.Player;
         
+        // Set the scripting backend to IL2CPP for Windows 64-bit
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "WINDOWS64");
         
+        // Disable Burst Debug Information
+        PlayerSettings.SetBurstBuildEnabled(BuildTargetGroup.Standalone, false);
+        
+        // Disable development build options
         EditorUserBuildSettings.development = false;
 
         BuildPipeline.BuildPlayer(buildPlayerOptions);
     }
 
-    [MenuItem("Custom/Build/Linux Server")]
+    [MenuItem("Custom/Build/Linux 64-bit Dedicated Server")]
     static void BuildLinuxServer()
     {
         string projectName = "Terron"; // Set the name of your project here
@@ -51,9 +56,14 @@ public class BuildScript
         buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
         buildPlayerOptions.subtarget = (int)StandaloneBuildSubtarget.Server;
 
+        // Set the scripting backend to IL2CPP for Linux 64-bit Dedicated Server
         PlayerSettings.SetScriptingBackend(BuildTargetGroup.Standalone, ScriptingImplementation.IL2CPP);
         PlayerSettings.SetScriptingDefineSymbolsForGroup(BuildTargetGroup.Standalone, "DEDICATED_SERVER");
         
+        // Disable Burst Debug Information
+        PlayerSettings.SetBurstBuildEnabled(BuildTargetGroup.Standalone, false);
+        
+        // Disable development build options
         EditorUserBuildSettings.development = false;
 
         BuildPipeline.BuildPlayer(buildPlayerOptions);
