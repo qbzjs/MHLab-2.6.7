@@ -30,26 +30,21 @@ public class GameManager : NetworkBehaviour
     private float currentTime;
     private bool timerRunning = false;
     
-#if DEDICATED_SERVER
-    
     private async void Start()
     {     
+    
+#if DEDICATED_SERVER
+
         NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
 
         await MultiplayService.Instance.UnreadyServerAsync();
             
         Debug.Log("Unreadied Server");
-    }
 
 #endif
-    
-    public override void OnNetworkSpawn()
-    {
-        base.OnNetworkSpawn();
-        
+
         SubscribeToEvents();
     }
-
     
     private async void SubscribeToEvents()
     {
