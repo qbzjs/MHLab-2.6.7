@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.Services.Multiplay;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using System.Linq;
 using TMPro;
@@ -54,6 +55,7 @@ public class VoteManager : NetworkBehaviour {
 #if DEDICATED_SERVER
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallBack;
+        ceneManager.sceneUnloaded += OnSceneUnloaded;
 #endif
         
 #if DEDICATED_SERVER
@@ -74,6 +76,7 @@ public class VoteManager : NetworkBehaviour {
 #if DEDICATED_SERVER
          NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnnectedCallback;
          NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallBack;
+         SceneManager.sceneUnloaded -= OnSceneUnloaded;
 #endif
      }    
 
@@ -216,6 +219,13 @@ public class VoteManager : NetworkBehaviour {
     private void OnClientDisconnectCallBack(ulong clientID)
     {
         maxPlayerCount.Value -= 1;
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnnectedCallback;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallBack;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
     }
     
 #endif
