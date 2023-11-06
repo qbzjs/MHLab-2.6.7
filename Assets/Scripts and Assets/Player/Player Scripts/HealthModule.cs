@@ -64,16 +64,18 @@ public class HealthModule : NetworkBehaviour
 
                 Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage + " Damage");
                 
-                NetworkObject networkObject = collision.gameObject.GetComponent<NetworkObject>();
-                
                 collision.gameObject.SetActive(false);
-
-#if DEDICATED_SERVER
-                networkObject.Despawn();
-#endif
             }
-            
-        }    
+        }
+
+#if  DEDICATED_SERVER
+        if (collision.gameObject.tag == "Projectiles")
+        {
+            NetworkObject networkObject = GetComponent<NetworkObject>();
+
+            networkObject.Despawn();
+        }
+#endif
     }
 
     void Die()
