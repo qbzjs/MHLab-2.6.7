@@ -55,7 +55,7 @@ public class VoteManager : NetworkBehaviour {
 #if DEDICATED_SERVER
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnnectedCallback;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallBack;
-        ceneManager.sceneUnloaded += OnSceneUnloaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
 #endif
         
 #if DEDICATED_SERVER

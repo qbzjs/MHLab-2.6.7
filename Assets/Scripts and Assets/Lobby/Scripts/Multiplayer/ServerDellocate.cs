@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using System.Collections;
 using Unity.Networking.Transport;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using Unity.Services.Multiplay;
 
@@ -28,6 +29,7 @@ public class ServerDeallocate : NetworkBehaviour
     {
         
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
         
  #if DEDICATED_SERVER
         // We must first prepare our callbacks like so:
@@ -87,10 +89,23 @@ public class ServerDeallocate : NetworkBehaviour
 
         Application.Quit();
     }
+    
 #endif
+
+    public override void OnDestroy()
+    {
+         NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+         SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    }    
     
     private void OnClientDisconnectCallback(ulong clientId)
     {
         Loader.Load(Loader.Scene.LobbyScene);
-    }    
+    }
+    
+    private void OnSceneUnloaded(Scene scene)
+   {
+       NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+       SceneManager.sceneUnloaded -= OnSceneUnloaded; 
+   }
 } 
