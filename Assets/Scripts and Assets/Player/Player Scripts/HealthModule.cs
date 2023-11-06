@@ -57,14 +57,14 @@ public class HealthModule : NetworkBehaviour
             
                 health.Value -= projectileScript.damage.Value;
 
+                collision.gameObject.SetActive(false);
+
                 if (health.Value <= 0)
                 {
                     Die();
                 }
 
                 Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage + " Damage");
-                
-                collision.gameObject.SetActive(false);
             }
         }
 
