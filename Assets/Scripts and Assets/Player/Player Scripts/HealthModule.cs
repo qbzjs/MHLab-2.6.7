@@ -49,15 +49,15 @@ public class HealthModule : NetworkBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (IsOwner || IsServer)
+        if (IsOwner)
         {
             if (collision.gameObject.CompareTag("Projectiles"))
             {
-                collision.gameObject.SetActive(false);
-                
                 Projectile projectileScript = collision.gameObject.GetComponent<Projectile>();
-            
+
+#if !DEDICATED_SERVER
                 health.Value -= projectileScript.damage.Value;
+#endif
                 
                 Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage + " Damage");
 
@@ -65,14 +65,6 @@ public class HealthModule : NetworkBehaviour
                 {
                     Die();
                 }
-
-#if DEDICATED_SERVER
-                if (collision.gameObject.CompareTag("Projectiles"))
-                {
-                    NetworkObject networkObject = collision.gameObject.GetComponent<NetworkObject>();
-                    networkObject.Despawn();
-                }
-#endif
             }
         }
     }

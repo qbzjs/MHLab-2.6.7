@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Projectile : NetworkBehaviour
 {
-    [HideInInspector] public NetworkVariable<float> projectileSpeed = new NetworkVariable<float>(value: 0f, NetworkVariableReadPermission.Everyone);
-    [HideInInspector] public NetworkVariable<float> damage = new NetworkVariable<float>(value: 0f, NetworkVariableReadPermission.Everyone);
+    [HideInInspector] public NetworkVariable<float> projectileSpeed = new NetworkVariable<float>(value: 0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    [HideInInspector] public NetworkVariable<float> damage = new NetworkVariable<float>(value: 0f, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
     
     private float bulletLife = 10f;
 
@@ -23,18 +23,12 @@ public class Projectile : NetworkBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        NetworkObject networkObject = GetComponent<NetworkObject>();
-
-        if (!collision.gameObject.CompareTag("Players") && !collision.gameObject.CompareTag("Projectiles"))
+        if (!collision.gameObject.CompareTag("Players"))
         {
-            
             gameObject.SetActive(false);
-            
-#if DEDICATED_SERVER
-            networkObject.Despawn();
-#endif
-            
+
+
+            StartCoroutine(DisableAfterDelay(0.1f));
         }
         
     }
@@ -52,6 +46,5 @@ public class Projectile : NetworkBehaviour
 #endif
         
     }
-  
 }
  
