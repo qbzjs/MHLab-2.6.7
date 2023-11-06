@@ -13,6 +13,7 @@ public class WeaponManager : NetworkBehaviour
     public float reloadTime;
     public float damage;
     public float maxRotation;
+    public float minRotation;
     public string maxAmmoConfigKey;
     public string reloadTimeConfigKey;
     public string projectileSpeedConfigKey;
@@ -20,6 +21,7 @@ public class WeaponManager : NetworkBehaviour
     
     [Header("References")]
     public Animator animator;
+    public SpriteRenderer gunSprite;
     public GameObject projectile;
     public Transform firePoint;
     public Camera camera;
@@ -36,37 +38,45 @@ public class WeaponManager : NetworkBehaviour
     public PlayerMovementInput playerInput;
     private InputAction fire1;
     private InputAction reload;
-    
+
     void Update()
     {
- #if !DEDICATED_SERVER
-        
+#if !DEDICATED_SERVER
         Vector3 cursorScreenPosition = Input.mousePosition;
-        Vector3 cursorWorldPosition = camera.ScreenToWorldPoint(new Vector3(cursorScreenPosition.x, cursorScreenPosition.y, transform.position.z - camera.transform.position.z));
-    
+        Vector3 cursorWorldPosition = camera.ScreenToWorldPoint(new Vector3(cursorScreenPosition.x,
+            cursorScreenPosition.y, transform.position.z - camera.transform.position.z));
+
         // Calculate the direction from the gun to the cursor
         Vector3 direction = cursorWorldPosition - transform.position;
-    
+
         // Calculate the rotation angle based on the direction
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-    
+
         // Ensure the rotation angle is outside the range of -65 to -150 degrees
-        if (angle >= -150f && angle <= -65f)
+        if (angle >= maxRotation && angle <= minRotation)
         {
-            if (angle > -107.5f)  // Adjust this threshold for smooth transition
+            if (angle > -107.5f)
             {
-                angle = -65f; // Set it to the minimum angle (-65 degrees) if it's within the range
+                angle = minRotation;
             }
             else
             {
-                angle = -150f; // Set it to the maximum angle (-150 degrees) if it's within the range
+                angle = maxRotation;
             }
         }
-    
+
+        if (angle > -150f && angle < 90f)
+        {
+            gunSprite.flipY = false; // Flip the y-axis
+        }
+        else
+        {
+            gunSprite.flipY = true; // Don't flip the y-axis
+        }
+
         // Apply the new Z rotation while preserving the original Y and X rotations
         Quaternion originalRotation = transform.rotation;
         transform.rotation = Quaternion.Euler(originalRotation.eulerAngles.x, originalRotation.eulerAngles.y, angle);
-        
 #endif
     }
 

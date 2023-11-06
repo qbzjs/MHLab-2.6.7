@@ -455,7 +455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.043137256}
+  m_Color: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 0.2627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2079,14 +2079,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5701683064213345806}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.66551197, y: -0.23894314, z: 0.66551197, w: -0.23894314}
   m_LocalPosition: {x: 7.1054274e-15, y: 12.68, z: -0.62007654}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3672372705354729958}
   m_Father: {fileID: 1567035339777307049}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 219.5}
 --- !u!95 &7952981621085453574
 Animator:
   serializedVersion: 5
@@ -2124,12 +2124,14 @@ MonoBehaviour:
   maxAmmo: 31
   reloadTime: 2
   damage: 10
-  maxRotation: 150
+  maxRotation: -150
+  minRotation: -65
   maxAmmoConfigKey: maxAmmo
   reloadTimeConfigKey: reloadTime
   projectileSpeedConfigKey: projectileSpeed
   damageConfigKey: damage
   animator: {fileID: 7952981621085453574}
+  gunSprite: {fileID: 4176401050994590997}
   projectile: {fileID: 6010287043103601133, guid: 2ca307ffd2eb6864a83a4a08eddd4709, type: 3}
   firePoint: {fileID: 3672372705354729958}
   camera: {fileID: 3010783817415548766}
@@ -2295,7 +2297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.20754719, g: 0.20754719, b: 0.20754719, a: 0.54509807}
+  m_Color: {r: 0.11320752, g: 0.11274981, b: 0.11274981, a: 0.85882354}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

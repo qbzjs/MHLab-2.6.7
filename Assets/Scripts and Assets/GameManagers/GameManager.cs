@@ -70,7 +70,8 @@ public class GameManager : NetworkBehaviour
 #endif
 
 #if DEDICATED_SERVER
-        Debug.Log("Client disconnected" + clientId);
+        Debug.Log("Player Count: " + playerCount);
+        Debug.Log("Client Disconnected:" + clientId);
         playerCount -= 1;
 
         if (playerCount == 0)

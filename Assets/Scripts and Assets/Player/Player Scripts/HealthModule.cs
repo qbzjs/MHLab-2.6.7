@@ -49,7 +49,7 @@ public class HealthModule : NetworkBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(IsServer)
+        if(IsOwner)
         {
             if (collision.gameObject.tag == "Projectiles")
             {
@@ -66,7 +66,11 @@ public class HealthModule : NetworkBehaviour
                 
                 NetworkObject networkObject = collision.gameObject.GetComponent<NetworkObject>();
                 
+                collision.gameObject.SetActive(false);
+
+#if DEDICATED_SERVER
                 networkObject.Despawn();
+#endif
             }
             
         }    
