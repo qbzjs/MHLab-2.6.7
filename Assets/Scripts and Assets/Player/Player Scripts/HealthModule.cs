@@ -71,7 +71,7 @@ public class HealthModule : NetworkBehaviour
 #if  DEDICATED_SERVER
         if (collision.gameObject.CompareTag("Projectiles"))
         {
-            NetworkObject networkObject = GetComponent<NetworkObject>();
+            NetworkObject networkObject = collision.gameObject.GetComponent<NetworkObject>();
 
             networkObject.Despawn();
         }
