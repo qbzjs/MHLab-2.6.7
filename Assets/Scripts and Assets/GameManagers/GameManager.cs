@@ -24,7 +24,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Transform spawnPoint9;
     [SerializeField] private Transform spawnPoint10;
     
-    [HideInInspector] public NetworkVariable<float> playerCount = new NetworkVariable<float>(value: 0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+    [HideInInspector] public NetworkVariable<int> playerCount = new NetworkVariable<int>(value: 0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
     
     [SerializeField] private float targetMinutes;
     private float currentTime;
@@ -65,7 +65,7 @@ public class GameManager : NetworkBehaviour
 
     private void OnClientDisconnectCallback(ulong clientId)
     {
-        Debug.Log("Player Count: " + playerCount);
+        Debug.Log("Player Count: " + playerCount.Value);
         
 #if !DEDICATED_SERVER
         Loader.Load(Loader.Scene.LobbyScene);
@@ -73,9 +73,9 @@ public class GameManager : NetworkBehaviour
 
 #if DEDICATED_SERVER
         Debug.Log("Client Disconnected:" + clientId);
-        playerCount -= 1;
+        playerCount.Value -= 1;
 
-        if (playerCount =< 0)
+        if (playerCount.Value <= 0)
         {
             Application.Quit(); // Shut down the server only when the last player leaves.
         }
@@ -98,7 +98,7 @@ public class GameManager : NetworkBehaviour
                 GameObject player = Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
                 player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
     
-                playerCount += 1;
+                playerCount.Value += 1;
     
                 Debug.Log("Spawned Player at spawn point " + (i + 1));
             }
