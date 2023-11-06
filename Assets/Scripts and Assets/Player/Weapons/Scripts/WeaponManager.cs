@@ -91,14 +91,19 @@ public class WeaponManager : NetworkBehaviour
         switch (response.requestOrigin)
         {
             case ConfigOrigin.Default:
+#if !DEDICATED_SERVER
                 Debug.Log("No settings loaded this session; using default values.");
+#endif
                 break;
             case ConfigOrigin.Cached:
+#if !DEDICATED_SERVER
                 Debug.Log("No settings loaded this session; using cached values from a previous session.");
+#endif
                 break;
             case ConfigOrigin.Remote:
+#if !DEDICATED_SERVER
                 Debug.Log("New settings loaded this session; update values accordingly.");
-                
+#endif
                 SetRemoteConfigurationValues();
                 
                 break;
@@ -112,7 +117,9 @@ public class WeaponManager : NetworkBehaviour
         projectileSpeed = ConfigManager.appConfig.GetFloat(projectileSpeedConfigKey);
         damage = ConfigManager.appConfig.GetFloat(damageConfigKey);
         
+#if !DEDICATED_SERVER
         Debug.Log("maxAmmo: " + maxAmmo + " reloadTime: " + reloadTime + " projectileSpeed: " + projectileSpeed + " damage: " + damage);
+#endif
     }
     
     private void Start()

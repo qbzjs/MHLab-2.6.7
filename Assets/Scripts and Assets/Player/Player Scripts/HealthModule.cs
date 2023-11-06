@@ -49,19 +49,27 @@ public class HealthModule : NetworkBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Projectiles")
-        {   
-            Projectile projectileScript = collision.gameObject.GetComponent<Projectile>();
-            
-            health.Value -= projectileScript.damage.Value;
-    
-            if (health.Value <= 0)
+        if(IsServer)
+        {
+            if (collision.gameObject.tag == "Projectiles")
             {
-                Die();
+                Projectile projectileScript = collision.gameObject.GetComponent<Projectile>();
+            
+                health.Value -= projectileScript.damage.Value;
+
+                if (health.Value <= 0)
+                {
+                    Die();
+                }
+
+                Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage + " Damage");
+                
+                NetworkObject networkObject = collision.gameObject.GetComponent<NetworkObject>();
+                
+                networkObject.Despawn();
             }
             
-            Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage + " Damage");
-        }
+        }    
     }
 
     void Die()

@@ -61,24 +61,22 @@ public class GameManager : NetworkBehaviour
         // We must then subscribe.
         m_ServerEvents = await MultiplayService.Instance.SubscribeToServerEventsAsync(m_MultiplayEventCallbacks);
     }
-#endif    
-    
+#endif
+
     private void OnClientDisconnectCallback(ulong clientId)
     {
-        
 #if !DEDICATED_SERVER
         Loader.Load(Loader.Scene.LobbyScene);
 #endif
-        
+
 #if DEDICATED_SERVER
         Debug.Log("Client disconnected" + clientId);
-    
+        playerCount -= 1;
+
         if (playerCount == 0)
         {
-            Application.Quit();
+            Application.Quit(); // Shut down the server only when the last player leaves.
         }
-    
-        playerCount -= 1;
 #endif
     }
     

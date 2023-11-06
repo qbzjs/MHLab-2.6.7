@@ -25,14 +25,13 @@ public class Projectile : NetworkBehaviour
     {
         
         NetworkObject networkObject = GetComponent<NetworkObject>();
-        
-        if (collision.gameObject.tag != "Players" || collision.gameObject.tag != "Projectiles")
+
+        if (!collision.gameObject.CompareTag("Players") && !collision.gameObject.CompareTag("Projectiles"))
         {
             
             gameObject.SetActive(false);
             
 #if DEDICATED_SERVER
-            
             networkObject.Despawn();
 #endif
             

@@ -69,7 +69,7 @@ public class VoteManager : NetworkBehaviour {
         
     }
     
-     private void OnDestroy()
+     public override void OnDestroy()
      {
 #if DEDICATED_SERVER
          NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnnectedCallback;

@@ -11856,7 +11856,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 0.5
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 3
   m_UseSpriteMesh: 0
@@ -13525,7 +13525,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 779177014}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -16663,8 +16663,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2113950454}
   m_HandleRect: {fileID: 2113950453}
   m_Direction: 2
-  m_Value: -0.0000003677421
-  m_Size: 0.29447
+  m_Value: 0
+  m_Size: 0.29446602
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -22241,7 +22241,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1234208599}
-  m_LocalRotation: {x: -0.00000004371139, y: -1, z: -0.00000004371139, w: 1.9106855e-15}
+  m_LocalRotation: {x: -1, y: 0.00000008742278, z: 3.821371e-15, w: 0.00000004371139}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -23061,7 +23061,7 @@ MonoBehaviour:
     windowObject: {fileID: 784290389}
     buttonObject: {fileID: 1674399731}
     firstSelected: {fileID: 784290389}
-  currentWindowIndex: 0
+  currentWindowIndex: 2
   cullWindows: 1
   initializeButtons: 1
   onWindowChange:
@@ -26245,7 +26245,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0007216479, y: 1825.7007}
+  m_AnchoredPosition: {x: -0.0007216479, y: 1825.7}
   m_SizeDelta: {x: 0, y: 2587.7}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1414926824
@@ -28442,7 +28442,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 975618117}
   m_HandleRect: {fileID: 975618116}
   m_Direction: 2
-  m_Value: -0.00000022143603
+  m_Value: 1
   m_Size: 0.36089963
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -28749,7 +28749,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540470322}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -29437,7 +29437,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 50%
+  m_text: 100%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 84dd14695854bbc43a5faa24fcf93d0d, type: 2}
   m_sharedMaterial: {fileID: 21261991626553910, guid: 84dd14695854bbc43a5faa24fcf93d0d, type: 2}
@@ -30101,7 +30101,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0007216479, y: 1653.8005}
+  m_AnchoredPosition: {x: -0.0007216479, y: -0.00012207031}
   m_SizeDelta: {x: 0, y: 2587.7}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1613616024
@@ -34453,7 +34453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 803cebee00d5c504e930205383017dc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentValue: 50
+  currentValue: 100
   sliderImage: {fileID: 712247659}
   indicatorPivot: {fileID: 1234208600}
   valueText: {fileID: 1558771981}
@@ -34462,8 +34462,8 @@ MonoBehaviour:
   decimals: 0
   isPercent: 1
   startPoint: 0
-  rememberValue: 0
-  sliderTag: Radial Slider
+  rememberValue: 1
+  sliderTag: MainVolume
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
