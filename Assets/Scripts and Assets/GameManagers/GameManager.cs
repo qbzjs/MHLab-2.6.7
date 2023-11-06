@@ -40,6 +40,8 @@ public class GameManager : NetworkBehaviour
             
         Debug.Log("Unreadied Server");
     }
+
+#endif
     
     public override void OnNetworkSpawn()
     {
@@ -47,11 +49,13 @@ public class GameManager : NetworkBehaviour
         
         SubscribeToEvents();
     }
+
     
     private async void SubscribeToEvents()
     {
          NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnectCallback;
-        
+
+#if DEDICATED_SERVER
         // We must first prepare our callbacks like so:
          m_MultiplayEventCallbacks = new MultiplayEventCallbacks();
         // m_MultiplayEventCallbacks.Allocate += OnAllocate;
@@ -60,8 +64,8 @@ public class GameManager : NetworkBehaviour
                 
         // We must then subscribe.
         m_ServerEvents = await MultiplayService.Instance.SubscribeToServerEventsAsync(m_MultiplayEventCallbacks);
-    }
 #endif
+    }
 
     private void OnClientDisconnectCallback(ulong clientId)
     {
@@ -77,7 +81,7 @@ public class GameManager : NetworkBehaviour
 
         if (playerCount.Value <= 0)
         {
-            Application.Quit(); // Shut down the server only when the last player leaves.
+            Application.Quit();
         }
 #endif
     }

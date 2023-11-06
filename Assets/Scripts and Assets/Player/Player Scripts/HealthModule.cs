@@ -51,7 +51,7 @@ public class HealthModule : NetworkBehaviour
     {
         if(IsOwner)
         {
-            if (collision.gameObject.tag == "Projectiles")
+            if (collision.gameObject.CompareTag("Projectiles"))
             {
                 Projectile projectileScript = collision.gameObject.GetComponent<Projectile>();
             
@@ -69,7 +69,7 @@ public class HealthModule : NetworkBehaviour
         }
 
 #if  DEDICATED_SERVER
-        if (collision.gameObject.tag == "Projectiles")
+        if (collision.gameObject.CompareTag("Projectiles"))
         {
             NetworkObject networkObject = GetComponent<NetworkObject>();
 
