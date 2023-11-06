@@ -153,8 +153,6 @@ public class LootLockerAuthentication : MonoBehaviour
                 Debug.Log("Error while creating user");
 
                 Error("Create User Error", "Error while creating user. Please try again.");
-                
-                
 
                 Wait.SetActive(false);
 
@@ -315,6 +313,8 @@ public class LootLockerAuthentication : MonoBehaviour
             {
                 Error("Player Name Set Error", "Error while setting player name. Please try again.");
                 
+                Wait.SetActive(false);
+                
                 Debug.Log("Error setting player name");
             }
         });
@@ -326,5 +326,7 @@ public class LootLockerAuthentication : MonoBehaviour
         errorWindow.descriptionText = description;
         errorWindow.UpdateUI();
         errorWindow.Open();
+        
+        Wait.SetActive(false);
     }
 }
