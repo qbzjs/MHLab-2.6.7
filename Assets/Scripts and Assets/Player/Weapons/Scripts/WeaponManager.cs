@@ -112,14 +112,14 @@ public class WeaponManager : NetworkBehaviour
         if (angle > maxRotation && angle < 90f)
         {
             transform.rotation = Quaternion.Euler(0, 0, angle);
-            firePoint.transform.Rotate(0, 0, angle);
+            firePoint.transform.rotation = Quaternion.Euler(0, 0, angle);
         }
         else
         {
             // Keep the Y-axis fixed at 0 while changing the Z-axis
             float newZRotation = 180f - angle;
             transform.rotation = Quaternion.Euler(180, 0, newZRotation + 180);
-            firePoint.transform.Rotate(180, 0, angle);
+            firePoint.transform.rotation = Quaternion.Euler(180, 0, angle);
         }
 #endif
 
