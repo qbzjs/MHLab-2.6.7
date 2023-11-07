@@ -64,13 +64,6 @@ public class GameManager : NetworkBehaviour
 
     private void OnClientDisconnectCallback(ulong clientId)
     {
-        Debug.Log("Player Count: " + playerCount.Value);
-
-        if (playerCount.Value == 0)
-        {
-            Debug.Log("No Players Left");
-        }
-        
 #if !DEDICATED_SERVER
         Loader.Load(Loader.Scene.LobbyScene);
 #endif

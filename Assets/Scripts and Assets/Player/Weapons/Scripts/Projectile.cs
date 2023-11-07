@@ -23,14 +23,16 @@ public class Projectile : NetworkBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("Players"))
+        if (!collision.gameObject.CompareTag("Projectiles"))
         {
             gameObject.SetActive(false);
-
-
-            StartCoroutine(DisableAfterDelay(0.1f));
-        }
+            
+#if DEDICATED_SERVER
+            NetworkObject networkObject = GetComponent<NetworkObject>();
         
+            networkObject.Despawn();
+#endif
+        }
     }
     
     private IEnumerator DisableAfterDelay(float delay)

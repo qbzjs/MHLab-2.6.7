@@ -59,7 +59,7 @@ public class HealthModule : NetworkBehaviour
                 health.Value -= projectileScript.damage.Value;
 #endif
                 
-                Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage + " Damage");
+                Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage.Value + " Damage");
 
                 if (health.Value <= 0)
                 {
