@@ -210,7 +210,7 @@ Transform:
   m_GameObject: {fileID: 587307831287661871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.97, y: 1.715, z: -0}
+  m_LocalPosition: {x: 4.97, y: 1.7150002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2079,14 +2079,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5701683064213345806}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.340171e-15, y: 12.68001, z: -0.6200452}
+  m_LocalRotation: {x: -0, y: -0, z: -0.9728726, w: 0.23134167}
+  m_LocalPosition: {x: 4.1436166e-15, y: 12.68001, z: -0.6200452}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3672372705354729958}
   m_Father: {fileID: 1567035339777307049}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -153.248}
 --- !u!95 &7952981621085453574
 Animator:
   serializedVersion: 5
@@ -2125,9 +2125,10 @@ MonoBehaviour:
   reloadTime: 2
   damage: 10
   fireRate: 10
+  turnSpeed: 100
   canHoldFire: 1
-  maxRotation: -150
-  minRotation: -65
+  maxRotation: -130
+  minRotation: -55
   maxAmmoConfigKey: maxAmmo
   reloadTimeConfigKey: reloadTime
   projectileSpeedConfigKey: projectileSpeed
@@ -2578,7 +2579,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &750152110093714332
 RectTransform:
   m_ObjectHideFlags: 0

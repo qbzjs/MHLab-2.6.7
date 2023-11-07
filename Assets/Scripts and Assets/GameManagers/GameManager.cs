@@ -74,7 +74,7 @@ public class GameManager : NetworkBehaviour
 
         if (playerCount.Value == 0)
         {
-            Application.Quit();
+            //Application.Quit();
         }
 #endif
     }

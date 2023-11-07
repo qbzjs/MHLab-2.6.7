@@ -90,8 +90,7 @@ public class WeaponManager : NetworkBehaviour
     {
 #if !DEDICATED_SERVER
         Vector3 cursorScreenPosition = Input.mousePosition;
-        Vector3 cursorWorldPosition = camera.ScreenToWorldPoint(new Vector3(cursorScreenPosition.x,
-            cursorScreenPosition.y, transform.position.z - camera.transform.position.z));
+        Vector3 cursorWorldPosition = camera.ScreenToWorldPoint(new Vector3(cursorScreenPosition.x, cursorScreenPosition.y, transform.position.z - camera.transform.position.z));
         
         Vector3 direction = cursorWorldPosition - transform.position;
         
@@ -119,7 +118,7 @@ public class WeaponManager : NetworkBehaviour
             // Keep the Y-axis fixed at 0 while changing the Z-axis
             float newZRotation = 180f - angle;
             transform.rotation = Quaternion.Euler(180, 0, newZRotation + 180);
-            firePoint.transform.rotation = Quaternion.Euler(180, 0, angle);
+            firePoint.transform.rotation = Quaternion.Euler(180, 180, angle + 180);
         }
 #endif
 
@@ -182,7 +181,7 @@ public class WeaponManager : NetworkBehaviour
 
     public void Fire1(InputAction.CallbackContext context)
     {
-        if (currentAmmo > 0 && (canHoldFire || !isFiring))
+        if (canHoldFire && !isFiring)
         {
             if (!isFiring)
             {
@@ -200,7 +199,7 @@ public class WeaponManager : NetworkBehaviour
 
     IEnumerator FireAtRate()
     {
-        while (isFiring)
+        while (isFiring && currentAmmo > 0)
         {
             Shoot();
             yield return new WaitForSeconds(1 / fireRate);
