@@ -72,9 +72,9 @@ public class GameManager : NetworkBehaviour
         Debug.Log("Client Disconnected:" + clientId);
         playerCount.Value -= 1;
 
-        if (playerCount.Value == 0)
+        if (playerCount.Value <= 0)
         {
-            //Application.Quit();
+            Application.Quit();
         }
 #endif
     }

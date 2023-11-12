@@ -1,4 +1,4 @@
-using System;
+ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode.Transports.UTP;
@@ -19,6 +19,7 @@ public class MatchmakerUI : MonoBehaviour {
     [SerializeField] private Transform connectingTransform;
     [SerializeField] private GameObject matchmakingWindow;
     [SerializeField] private NotificationManager notification;
+    [SerializeField] private Button playButton;
 
     private CreateTicketResponse createTicketResponse;
     private float pollTicketTimer;
@@ -32,6 +33,8 @@ public class MatchmakerUI : MonoBehaviour {
 
     public async void FindMatch() {
         Debug.Log("FindMatch");
+        
+        playButton.interactable = false;
 
         lookingForMatchTransform.gameObject.SetActive(true);
         matchmakingWindow.SetActive(true);
@@ -82,6 +85,7 @@ public class MatchmakerUI : MonoBehaviour {
             Debug.Log("multiplayAssignment.Status " + multiplayAssignment.Status);
             switch (multiplayAssignment.Status) {
                 case MultiplayAssignment.StatusOptions.Found:
+                    playButton.interactable = false;
                     CreateNotificationServerFound();
                     
                     createTicketResponse = null;
@@ -96,9 +100,11 @@ public class MatchmakerUI : MonoBehaviour {
                     break;
                 case MultiplayAssignment.StatusOptions.InProgress:
                     // Still waiting...
+                    playButton.interactable = false;
                     break;
                 case MultiplayAssignment.StatusOptions.Failed:
                     createTicketResponse = null;
+                    playButton.interactable = true;
                     Debug.Log("Failed to create Multiplay server!");
                     CreateNotificationAllocationError();
                     lookingForMatchTransform.gameObject.SetActive(false);
@@ -107,6 +113,7 @@ public class MatchmakerUI : MonoBehaviour {
                 case MultiplayAssignment.StatusOptions.Timeout:
                     createTicketResponse = null;
                     Debug.Log("Multiplay Timeout!");
+                    playButton.interactable = true;
                     CreateNotificationTimeout();
                     lookingForMatchTransform.gameObject.SetActive(false);
                     matchmakingWindow.SetActive(false);

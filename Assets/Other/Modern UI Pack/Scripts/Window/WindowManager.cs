@@ -200,12 +200,12 @@ namespace Michsky.MUIP
                 if (windows[currentButtonIndex].buttonObject != null)
                 {
                     nextButton = windows[currentButtonIndex].buttonObject;
+                    
+                   // currentButtonAnimator = currentButton.GetComponent<Animator>();
+                    //nextButtonAnimator = nextButton.GetComponent<Animator>();
 
-                    currentButtonAnimator = currentButton.GetComponent<Animator>();
-                    nextButtonAnimator = nextButton.GetComponent<Animator>();
-
-                    currentButtonAnimator.Play(buttonFadeOut);
-                    nextButtonAnimator.Play(buttonFadeIn);
+                    //currentButtonAnimator.Play(buttonFadeOut);
+                    //nextButtonAnimator.Play(buttonFadeIn);
                 }
 
                 onWindowChange.Invoke(currentWindowIndex);

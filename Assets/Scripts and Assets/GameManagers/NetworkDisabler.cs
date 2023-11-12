@@ -26,10 +26,8 @@ public class NetworkDisabler : NetworkBehaviour
             playerObject.GetComponent<MovementManager>().enabled = false;
             playerObject.GetComponent<MovementModule>().enabled = false;
             playerObject.GetComponent<CrouchModule>().enabled = false;
-            playerObject.GetComponent<JumpModule>().enabled = false;
             playerObject.GetComponent<SprintModule>().enabled = false;
             playerObject.GetComponent<SlideModule>().enabled = false;
-            playerObject.GetComponent<ClimbModule>().enabled = false;
             playerObject.GetComponent<HealthModule>().enabled = false;
             playerInput.enabled = false;
             inputSystemUIInputModule.enabled = false;

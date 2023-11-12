@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 using UnityEditor;
 
 #if UNITY_EDITOR
@@ -22,82 +23,89 @@ public class RequiredScriptsSlide : Editor
 public class SlideModule : MonoBehaviour
 {
     [Header("Customize")]
-    [Tooltip("The value used to set how fast you move while sliding. The recommended value is 18")]
+
+    [Tooltip("The value used to set how fast you move while sliding. The recommended value is 50.")]
     [SerializeField] private float slideSpeed;
-    
-    [Tooltip("The value used to set how high the player is while sliding. The recommended value is 0.5")]
-    [SerializeField] private float slideHeight;
-    
+
+    [Tooltip("The value used to set the scale of the player is while sliding. The recommended value is 0.5")]
+    [SerializeField] private float slideScale;
+
     [Tooltip("The value used to set the minimum speed required to slide. The recommended value is 2.5")]
     [SerializeField] private float minSlideSpeed;
 
+    [Tooltip("The cooldown time between slides in seconds. The recommended value is 5.")]
+    [SerializeField] private float slideCooldown;
+
     [Header("References")]
     [SerializeField] private MovementManager movementManager;
-
+    
     private void Slide()
     {
-        if (movementManager.useDebug)
-        {
-            Debug.Log("Slide method called.");
-        }
-
         movementManager.isSliding = true;
+        movementManager.canSlide = false;
 
-        movementManager.orientation.localScale = new Vector3(1, slideHeight, 1);
+        movementManager.playerObject.localScale = new Vector3(slideScale, slideScale, slideScale);
 
-        Vector3 slideDirection = transform.forward;
+        Vector2 slideDirection = Quaternion.Euler(0f, 0f, -90f) * transform.up; // Subtract 90 degrees
 
-        movementManager.rb.AddForce(slideDirection * slideSpeed, ForceMode2D.Impulse);
+        // Set Rigidbody2D velocity directly for sliding
+        movementManager.rb.velocity = slideDirection * slideSpeed;
 
         movementManager.canWalk = false;
 
-        movementManager.rb.AddForce(Vector3.down * 5f, ForceMode2D.Impulse);
+        // Start cooldown coroutine
+        StartCoroutine(SlideCooldown());
     }
 
-    private void StopSlide()
+    private IEnumerator SlideCooldown()
     {
-        if (movementManager.useDebug)
+        yield return new WaitForSeconds(slideCooldown);
+        movementManager.canSlide = true;
+    }
+
+    public void StopSlide(InputAction.CallbackContext context)
+    {
+        if (movementManager.isSliding)
         {
-            Debug.Log("StopSlide method called.");
-        }
+            CancelSlide();
+        }    
+    }
 
-        movementManager.isSliding = false;
+    public void CancelSlide()
+    {
+        if (movementManager.isSliding)
+        {
+            movementManager.isSliding = false;
 
-        movementManager.orientation.localScale = new Vector3(1, movementManager.playerHeight, 1);
+            movementManager.playerObject.localScale = new Vector3(movementManager.playerScale,
+                movementManager.playerScale,
+                movementManager.playerScale);
 
-        movementManager.canWalk = true;
+            // Set Rigidbody2D velocity directly to zero to stop sliding
+            movementManager.rb.velocity = Vector2.zero;
+
+            movementManager.canWalk = true;
+        }    
     }
 
     private void Update()
     {
         if (movementManager.rb.velocity.magnitude < minSlideSpeed && movementManager.isSliding)
         {
-            if (movementManager.useDebug)
-            {
-                Debug.Log("Update: Stopping slide due to low velocity.");
-            }
-            StopSlide();
+            CancelSlide();
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        CancelSlide();
     }
 
     public void StartSlide(InputAction.CallbackContext context)
     {
-        if (movementManager.isSprinting && movementManager.canSlide)
+        if (movementManager.isSprinting && movementManager.isWalking && movementManager.canSlide && !movementManager.isSliding && !movementManager.isDashing)
         {
-            if (movementManager.useDebug)
-            {
-                Debug.Log("StartSlide method called.");
-            }
             Slide();
         }
-    }
-
-    public void StopSlide(InputAction.CallbackContext context)
-    {
-        if (movementManager.useDebug)
-        {
-            Debug.Log("StopSlide (InputAction) method called.");
-        }
-        StopSlide();
     }
 }

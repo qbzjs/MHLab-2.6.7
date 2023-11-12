@@ -23,10 +23,10 @@ public class SprintModule : MonoBehaviour
 {
     [Header("Customize")]
     
-    [Tooltip("The value used to set how fast you move while sprinting. The recommended value is 25")]
+    [Tooltip("The value used to set how fast you move while sprinting. The recommended value is 25.")]
     [SerializeField] private float sprintMoveSpeed;
     
-    [Tooltip("The value used to set the max speed you can move while sprinting. The recommended value is 25")]
+    [Tooltip("The value used to set the max speed you can move while sprinting. The recommended value is 25.")]
     [SerializeField] private float sprintMaxSpeed;
 
     [Header("References")]
@@ -35,43 +35,30 @@ public class SprintModule : MonoBehaviour
 
     public void StartSprint(InputAction.CallbackContext context)
     {
-        movementManager.isSprinting = true;
-        if (movementManager.useDebug) Debug.Log("StartSprint called.");
+        if (!movementManager.isCrouching && !movementManager.isSliding && !movementManager.isDashing && movementManager.canSprint)
+        {
+            Sprint();
+        }
     }
 
     public void StopSprint(InputAction.CallbackContext context)
     {
-        movementManager.isSprinting = false;
-        if (movementManager.useDebug) Debug.Log("StopSprint called.");
-    }
-
-    private void Update()
-    {
-        if (movementManager.isCrouching == false)
-        {
-            if (movementManager.isSprinting && movementManager.canSprint)
-            {
-                Sprint();
-            }
-            else if (movementManager.isSprinting == false)
-            {
-                StopSprint();
-            }
-        }
-        if (movementManager.useDebug) Debug.Log("Update called.");
+        StopSprint();
     }
 
     private void Sprint()
     {
+        movementManager.isSprinting = true;
+        
         movementModule.moveSpeed = sprintMoveSpeed;
         movementModule.maxSpeed = sprintMaxSpeed;
-        if (movementManager.useDebug) Debug.Log("Sprint called.");
     }
 
     private void StopSprint()
     {
         movementModule.moveSpeed = movementModule.normalMoveSpeed;
         movementModule.maxSpeed = movementModule.normalMaxSpeed;
-        if (movementManager.useDebug) Debug.Log("StopSprint called.");
+
+        movementManager.isSprinting = false;
     }
 }

@@ -106,6 +106,7 @@ public class ServerDeallocate : NetworkBehaviour
     private void OnSceneUnloaded(Scene scene)
    {
        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+       
        SceneManager.sceneUnloaded -= OnSceneUnloaded; 
    }
 } 

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.InputSystem;
@@ -8,42 +7,133 @@ using Unity.RemoteConfig;
 public class WeaponManager : NetworkBehaviour
 {
     [Header("Customize")]
-    public float projectileSpeed;
-    public float maxAmmo;
-    public float reloadTime;
-    public float damage;
-    public float fireRate;
-    public bool canHoldFire;
-    public float maxRotation;
-    public float minRotation;
-    public string maxAmmoConfigKey;
-    public string reloadTimeConfigKey;
-    public string projectileSpeedConfigKey;
-    public string damageConfigKey;
+    [Tooltip("The value used to set how fast the bullet moves. The recommended value is 100.")]
+    [SerializeField] private float projectileSpeed;
+    
+    [Tooltip("The value used to set the maximum amount of ammo the weapon can have. The recommended value is 31.")]
+    [SerializeField] private float maxAmmo;
+    
+    [Tooltip("The value used to set how long it takes the gun to reload in seconds. The recommended value is 2.")]
+    [SerializeField] private float reloadTime;
+    
+    [Tooltip("The value used to set how much damage the gun applies to the player on contact. The recommended value is 10.")]
+    [SerializeField] private float damage;
+    
+    [Tooltip("The value used to set how fast the gun shoots bullets. The recommended value is 5.")]
+    [SerializeField] private float fireRate;
+    
+    [Tooltip("The value used to set how many bullets get shot per time the shoot method gets called. The recommended value is 1.")]
+    [SerializeField] private int projectilesPerShot;
+    
+    [Tooltip("The value used to set how many projectiles get spawned initially. The recommended value is 40.")]
+    [SerializeField] private int poolSize;
+    
+    [Tooltip("The value used to set how much recoil the player experiences when shooting. The recommended value is 2.")]
+    [SerializeField] private float recoilAmount;
+
+    [Tooltip("The value used to set how much knockback the player experiences when shooting. The recommended value is 2.")]
+    [SerializeField] private float knockbackForce;
+
+    [Tooltip("The value used to set how much spread the bullets have when shooting. The recommended value is 1.")]
+    [SerializeField] private float spreadAngle;
+
+    [Tooltip("The audio clip played when the player shoots.")]
+    [SerializeField] private AudioClip shootSound;
+    
+    [Tooltip("The boolean used to determine if the player is allowed to hold down the shoot button. The recommended value is true.")]
+    [SerializeField] private bool canHoldFire;
+    
+    [Tooltip("The boolean used to determine if a laser sight should be displayed. The recommended value is true.")]
+    [SerializeField] private bool useLaser;
+    
+    [Header("Cloud Config")]
+    [Tooltip("The cloud key value that is used to set the max ammo variable. The recommended value is [weaponName]MaxAmmo.")]
+    [SerializeField] private string maxAmmoConfigKey;
+    
+    [Tooltip("The cloud key value that is used to set the reload time variable. The recommended value is [weaponName]ReloadTime.")]
+    [SerializeField] private string reloadTimeConfigKey;
+    
+    [Tooltip("The cloud key value that is used to set the projectile speed variable. The recommended value is [weaponName]Speed.")]
+    [SerializeField] private string projectileSpeedConfigKey;
+    
+    [Tooltip("The cloud key value that is used to set the weapon damage variable. The recommended value is [weaponName]damage.")]
+    [SerializeField] private string damageConfigKey;
 
     [Header("References")]
-    public Animator animator;
-    public GameObject projectile;
-    public Transform firePoint;
-    public Camera camera;
-    public struct userAttributes { }
-    public struct appAttributes { }
+    [SerializeField] private MovementManager movementManager;
+    [SerializeField] private Animator animator;
+    [SerializeField] private GameObject projectile;
+    [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform laserPoint;
+    [SerializeField] private struct userAttributes { }
+    [SerializeField] private struct appAttributes { }
+    [SerializeField] private LineRenderer lineRenderer;
 
-    [Header("Private Variables")] 
+    [Header("Private Variables")]
     private bool isFiring;
+    private bool canFire;
+    private bool canShoot = true;
+    private bool canShootWhileReloading = true;
     private float currentAmmo;
     private Vector3 destination;
     private bool isReloading;
+    private float timeBetweenShots;
+    private float lastShotTime;
+    private const float SingleClickCooldown = 1f;
+    private Quaternion initialRotation;
+    private float totalRecoilRotation;
+    private bool isRecoiling;
 
     [Header("Input")]
-    public PlayerMovementInput playerInput;
+    [SerializeField] private PlayerMovementInput playerInput;
     private InputAction fire1;
     private InputAction reload;
 
-    private void Awake()
+    private void Start()
     {
+        for (int i = 0; i < poolSize; i++)
+        {
+            SpawnProjectileServerRPC(firePoint.position, firePoint.rotation);
+        }
+        
         playerInput = new PlayerMovementInput();
         FetchRemoteConfiguration();
+        
+        currentAmmo = maxAmmo;
+
+        isReloading = false;
+        animator.SetBool("Reloading", false);
+
+        fire1 = playerInput.Player.Fire1;
+        fire1.Enable();
+        fire1.performed += Fire1;
+        fire1.canceled += CancelFire1;
+
+        reload = playerInput.Player.Reload;
+        reload.Enable();
+        reload.performed += StartReload;
+        
+        lineRenderer = laserPoint.GetComponent<LineRenderer>();
+        lineRenderer.positionCount = 2;
+        
+        if (useLaser)
+        {
+            laserPoint.gameObject.SetActive(true);
+        }
+        else
+        {
+            laserPoint.gameObject.SetActive(false);
+        }
+    }
+    
+    private void OnDestroy()
+    {
+        fire1.performed -= Fire1;
+        fire1.canceled -= CancelFire1;
+        fire1.Disable();
+        
+        reload.performed -= StartReload;
+        reload.Disable();
     }
 
     private void FetchRemoteConfiguration()
@@ -60,13 +150,10 @@ public class WeaponManager : NetworkBehaviour
         switch (response.requestOrigin)
         {
             case ConfigOrigin.Default:
-                Debug.Log("No settings loaded this session; using default values.");
                 break;
             case ConfigOrigin.Cached:
-                Debug.Log("No settings loaded this session; using cached values from a previous session.");
                 break;
             case ConfigOrigin.Remote:
-                Debug.Log("New settings loaded this session; update values accordingly.");
                 SetRemoteConfigurationValues();
                 break;
         }
@@ -78,53 +165,13 @@ public class WeaponManager : NetworkBehaviour
         reloadTime = ConfigManager.appConfig.GetFloat(reloadTimeConfigKey);
         projectileSpeed = ConfigManager.appConfig.GetFloat(projectileSpeedConfigKey);
         damage = ConfigManager.appConfig.GetFloat(damageConfigKey);
-        Debug.Log("maxAmmo: " + maxAmmo + " reloadTime: " + reloadTime + " projectileSpeed: " + projectileSpeed + " damage: " + damage);
     }
-
-    private void Start()
+    
+    private void Update()
     {
-        currentAmmo = maxAmmo;
-    }
-
-    void Update()
-    {
-#if !DEDICATED_SERVER
-        Vector3 cursorScreenPosition = Input.mousePosition;
-        Vector3 cursorWorldPosition = camera.ScreenToWorldPoint(new Vector3(cursorScreenPosition.x, cursorScreenPosition.y, transform.position.z - camera.transform.position.z));
-        
-        Vector3 direction = cursorWorldPosition - transform.position;
-        
-        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        
-        if (angle >= maxRotation && angle <= minRotation)
-        {
-            if (angle > -107.5f)
-            {
-                angle = minRotation;
-            }
-            else
-            {
-                angle = maxRotation;
-            }
-        }
-
-        if (angle > maxRotation && angle < 90f)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, angle);
-            firePoint.transform.rotation = Quaternion.Euler(0, 0, angle);
-        }
-        else
-        {
-            // Keep the Y-axis fixed at 0 while changing the Z-axis
-            float newZRotation = 180f - angle;
-            transform.rotation = Quaternion.Euler(180, 0, newZRotation + 180);
-            firePoint.transform.rotation = Quaternion.Euler(180, 180, angle + 180);
-        }
-#endif
-
         if (currentAmmo > 0 && (canHoldFire || isFiring))
         {
-            if (fire1.ReadValue<float>() > 0)
+            if ((fire1.ReadValue<float>() > 0 || isFiring) && canShootWhileReloading)
             {
                 if (!isFiring)
                 {
@@ -137,57 +184,86 @@ public class WeaponManager : NetworkBehaviour
                 isFiring = false;
             }
         }
+        
+        if (useLaser)
+        {
+            DrawLaser();
+        }
     }
-
-    void OnEnable()
+    
+    public void DrawLaser()
     {
-        isReloading = false;
-        animator.SetBool("Reloading", false);
+        int projectileLayer = LayerMask.NameToLayer("Projectile");
+        int layerMask = ~(1 << projectileLayer);
 
-        fire1 = playerInput.Player.Fire1;
-        fire1.Enable();
-        fire1.performed += Fire1;
-        fire1.canceled += CancelFire1; // Called when the player releases the fire1 button
+        RaycastHit2D hit = Physics2D.Raycast(laserPoint.position, laserPoint.up, Mathf.Infinity, layerMask);
 
-        reload = playerInput.Player.Reload;
-        reload.Enable();
-        reload.performed += StartReload;
-    }
+        lineRenderer.SetPosition(0, laserPoint.position);
 
-    void OnDisable()
-    {
-        fire1.Disable();
-        reload.Disable();
-    }
-
+        if (hit.collider != null)
+        {
+            lineRenderer.SetPosition(1, hit.point);
+        }
+        else
+        {
+            lineRenderer.SetPosition(1, laserPoint.position + laserPoint.up * 100f);
+        }
+    }    
+    
     public void StartReload(InputAction.CallbackContext context)
     {
-        if (currentAmmo < maxAmmo)
+        if (currentAmmo < maxAmmo && !isReloading)
         {
             StartCoroutine(Reload());
+        }
+        else
+        {
+            canFire = true;
         }
     }
 
     IEnumerator Reload()
     {
+        animator.SetTrigger("Reload");
+        canShootWhileReloading = false;
         isReloading = true;
         animator.SetBool("Reloading", true);
+        isFiring = false;
         yield return new WaitForSeconds(reloadTime - 0.25f);
         animator.SetBool("Reloading", false);
         yield return new WaitForSeconds(1f);
         currentAmmo = maxAmmo;
         isReloading = false;
+        canShootWhileReloading = true;
+        canFire = true;
     }
-
-    public void Fire1(InputAction.CallbackContext context)
+    
+    void Fire1(InputAction.CallbackContext context)
     {
-        if (canHoldFire && !isFiring)
+        if (currentAmmo > 0 && (canHoldFire || isFiring))
         {
-            if (!isFiring)
+            if (context.started)
             {
-                // Start firing when the button is initially pressed
-                isFiring = true;
-                StartCoroutine(FireAtRate());
+                float timeSinceLastShot = Time.time - lastShotTime;
+    
+                if (!isFiring && (timeSinceLastShot >= SingleClickCooldown) && !isReloading)
+                {
+                    isFiring = true;
+                    StartCoroutine(FireAtRate());
+                }
+            }
+            else if (context.canceled)
+            {
+                isFiring = false;
+            }
+        }
+        else if (!canHoldFire)
+        {
+            isFiring = context.started;
+    
+            if (currentAmmo > 0 && context.started && !isReloading)
+            {
+                Shoot();
             }
         }
     }
@@ -201,26 +277,79 @@ public class WeaponManager : NetworkBehaviour
     {
         while (isFiring && currentAmmo > 0)
         {
-            Shoot();
-            yield return new WaitForSeconds(1 / fireRate);
+            if (canShoot)
+            {
+                Shoot();
+    
+                timeBetweenShots = 1 / fireRate;
+    
+                lastShotTime = Time.time;
+    
+                canShoot = false;
+    
+                yield return new WaitForSeconds(timeBetweenShots);
+    
+                canShoot = true;
+            }
+            else
+            {
+                yield return null;
+            }
         }
     }
     
     void Shoot()
     {
-        currentAmmo--;
+        for (int i = 0; i < projectilesPerShot; i++)
+        {
+            currentAmmo--;
+            
+            SpawnProjectileServerRPC(firePoint.position, firePoint.rotation);
+            
+            // Recoil
+            animator.SetTrigger("Shoot");
+    
+            // Knockback
+            if (knockbackForce > 0)
+            {
+                Rigidbody2D rb = movementManager.rb;
+                if (rb != null)
+                {
+                    Vector2 knockbackDirection = -transform.up;
+                    rb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+                }
+            }
+    
+            // Audio
+            if (shootSound != null)
+            {
+                GetComponent<AudioSource>().PlayOneShot(shootSound);
+            }
+        }
+    }
+    
+    [ServerRpc]
+    private void InitialSpawnProjectileServerRPC(Vector3 position, Quaternion rotation, ServerRpcParams serverRpcParams = default)
+    {
+        GameObject instantiatedProjectile = ObjectPoolManager.SpawnObject(projectile, position, rotation);
+        
+        NetworkObject networkObject = instantiatedProjectile.GetComponent<NetworkObject>();
+        
+        networkObject.SpawnWithOwnership(serverRpcParams.Receive.SenderClientId);
 
-        SpawnBulletServerRPC(firePoint.position, firePoint.rotation);
+#if !DEDICATED_SERVER
+        Projectile projectileScript = instantiatedProjectile.GetComponent<Projectile>();
+        
+        projectileScript.projectileSpeed.Value = projectileSpeed;
+        projectileScript.GetComponent<Projectile>().damage.Value = damage;
+#endif
+        
+        ObjectPoolManager.ReturnObjectToPool(instantiatedProjectile);
     }
 
     [ServerRpc]
-    private void SpawnBulletServerRPC(Vector3 position, Quaternion rotation, ServerRpcParams serverRpcParams = default)
+    private void SpawnProjectileServerRPC(Vector3 position, Quaternion rotation, ServerRpcParams serverRpcParams = default)
     {
-        GameObject instantiatedBullet = Instantiate(projectile, position, rotation);
-        instantiatedBullet.GetComponent<NetworkObject>().SpawnWithOwnership(serverRpcParams.Receive.SenderClientId);
-#if !DEDICATED_SERVER
-        instantiatedBullet.GetComponent<Projectile>().projectileSpeed.Value = projectileSpeed;
-        instantiatedBullet.GetComponent<Projectile>().damage.Value = damage;
- #endif
+        GameObject instantiatedProjectile = ObjectPoolManager.SpawnObject(projectile, position, rotation);
     }
 }

@@ -27,8 +27,11 @@ public class HealthModule : NetworkBehaviour
     
     [Header("Customize")]
     
-    public float maxHealth = 120;
-    [SerializeField] private float positionRange = 70f;
+    [Tooltip("The max amount of health the player can have. The recomended value is 100.")]
+    [SerializeField] private float maxHealth;
+
+    [Tooltip("The range that the player can be teleported when dying. The recommended value is 70")]
+    [SerializeField] private float positionRange;
     
     [Header("References")]
     
@@ -58,8 +61,6 @@ public class HealthModule : NetworkBehaviour
 #if !DEDICATED_SERVER
                 health.Value -= projectileScript.damage.Value;
 #endif
-                
-                Debug.Log("Player Hit By Projectile From " + collision.gameObject.name + " For " + projectileScript.damage.Value + " Damage");
 
                 if (health.Value <= 0)
                 {
@@ -72,7 +73,6 @@ public class HealthModule : NetworkBehaviour
     void Die()
     {
         transform.position = new Vector3(Random.Range(positionRange, -positionRange), Random.Range(positionRange, -positionRange), 0);
-        Debug.Log("Player Died");
         health.Value = maxHealth;
     }  
 }

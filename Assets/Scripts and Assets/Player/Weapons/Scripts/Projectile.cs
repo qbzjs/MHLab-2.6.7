@@ -10,10 +10,8 @@ public class Projectile : NetworkBehaviour
     
     private float bulletLife = 10f;
 
-    public override void OnNetworkSpawn()
+    private void OnEnable()
     {
-        base.OnNetworkSpawn();
-
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         Vector2 moveDirection = new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
         rb.velocity = moveDirection.normalized * projectileSpeed.Value;
@@ -25,13 +23,7 @@ public class Projectile : NetworkBehaviour
     {
         if (!collision.gameObject.CompareTag("Projectiles"))
         {
-            gameObject.SetActive(false);
-            
-#if DEDICATED_SERVER
-            NetworkObject networkObject = GetComponent<NetworkObject>();
-        
-            networkObject.Despawn();
-#endif
+            ObjectPoolManager.ReturnObjectToPool(gameObject);
         }
     }
     
@@ -40,13 +32,7 @@ public class Projectile : NetworkBehaviour
         
         yield return new WaitForSeconds(delay);
         
-        
-#if DEDICATED_SERVER
-        NetworkObject networkObject = GetComponent<NetworkObject>();
-        
-        networkObject.Despawn();
-#endif
-        
+        ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 }
  

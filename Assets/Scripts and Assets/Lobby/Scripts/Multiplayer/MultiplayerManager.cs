@@ -20,7 +20,6 @@ public class MultiplayerManager : NetworkBehaviour
     public event EventHandler OnFailedToJoinGame;
     public event EventHandler OnPlayerDataNetworkListChanged;
 
-    private NetworkList<PlayerData> playerDataNetworkList;
     private string playerName;
 
     private void Awake()
@@ -30,9 +29,6 @@ public class MultiplayerManager : NetworkBehaviour
 
         // Player Name Here!!!!
         playerName = PlayerPrefs.GetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, "PlayerName" + UnityEngine.Random.Range(100, 1000));
-
-        playerDataNetworkList = new NetworkList<PlayerData>();
-        playerDataNetworkList.OnListChanged += PlayerDataNetworkList_OnListChanged;
     }
 
     private void Start()
@@ -56,11 +52,6 @@ public class MultiplayerManager : NetworkBehaviour
         PlayerPrefs.SetString(PLAYER_PREFS_PLAYER_NAME_MULTIPLAYER, playerName);
     }
 
-    private void PlayerDataNetworkList_OnListChanged(NetworkListEvent<PlayerData> changeEvent)
-    {
-        OnPlayerDataNetworkListChanged?.Invoke(this, EventArgs.Empty);
-    }
-
     public void StartHost()
     {
         NetworkManager.Singleton.ConnectionApprovalCallback += NetworkManager_ConnectionApprovalCallback;
@@ -80,34 +71,6 @@ public class MultiplayerManager : NetworkBehaviour
     private void NetworkManager_Server_OnClientDisconnectCallback(ulong clientId)
     {
         Debug.Log("Client Disconnected " + clientId);
-
-        for (int i = 0; i < playerDataNetworkList.Count; i++)
-        {
-            PlayerData playerData = playerDataNetworkList[i];
-            if (playerData.clientId == clientId)
-            {
-                // Disconnected!
-                playerDataNetworkList.RemoveAt(i);
-            }
-        }
-
-#if DEDICATED_SERVER
-        Debug.Log("playerDataNetworkList.Count " + playerDataNetworkList.Count);
-        if (SceneManager.GetActiveScene().name == Loader.Scene.GameScene.ToString())
-        {
-            // Player leaving during GameScene
-            if (playerDataNetworkList.Count <= 0)
-            {
-                // All players left the game
-                Debug.Log("All players left the game");
-                Debug.Log("Shutting Down Network Manager");
-                NetworkManager.Singleton.Shutdown();
-                Application.Quit();
-                //Debug.Log("Going Back to Main Menu");
-                //Loader.Load(Loader.Scene.MainMenuScene);
-            }
-        }
-#endif
     }
 
     private void NetworkManager_OnClientConnectedCallback(ulong clientId)
@@ -162,68 +125,18 @@ public class MultiplayerManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void SetPlayerNameServerRpc(string playerName, ServerRpcParams serverRpcParams = default)
     {
-        int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
-        PlayerData playerData = playerDataNetworkList[playerDataIndex];
-        playerData.playerName = playerName;
-        playerDataNetworkList[playerDataIndex] = playerData;
+        
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void SetPlayerIdServerRpc(string playerId, ServerRpcParams serverRpcParams = default)
     {
-        int playerDataIndex = GetPlayerDataIndexFromClientId(serverRpcParams.Receive.SenderClientId);
-        PlayerData playerData = playerDataNetworkList[playerDataIndex];
-        playerData.playerId = playerId;
-        playerDataNetworkList[playerDataIndex] = playerData;
+       
     }
 
     private void NetworkManager_Client_OnClientDisconnectCallback(ulong clientId)
     {
         OnFailedToJoinGame?.Invoke(this, EventArgs.Empty);
-    }
-
-    public NetworkList<PlayerData> GetPlayerDataNetworkList()
-    {
-        return playerDataNetworkList;
-    }
-
-    public bool IsPlayerIndexConnected(int playerIndex)
-    {
-        return playerIndex < playerDataNetworkList.Count;
-    }
-
-    public int GetPlayerDataIndexFromClientId(ulong clientId)
-    {
-        for (int i = 0; i < playerDataNetworkList.Count; i++)
-        {
-            if (playerDataNetworkList[i].clientId == clientId)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public PlayerData GetPlayerDataFromClientId(ulong clientId)
-    {
-        foreach (PlayerData playerData in playerDataNetworkList)
-        {
-            if (playerData.clientId == clientId)
-            {
-                return playerData;
-            }
-        }
-        return default;
-    }
-
-    public PlayerData GetPlayerData()
-    {
-        return GetPlayerDataFromClientId(NetworkManager.Singleton.LocalClientId);
-    }
-
-    public PlayerData GetPlayerDataFromPlayerIndex(int playerIndex)
-    {
-        return playerDataNetworkList[playerIndex];
     }
 
     public void KickPlayer(ulong clientId)
